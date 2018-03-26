@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Boilerplate application for building REST APIs using express and the fabric SDK.",
   "author": "Maurice Dalderup <Maurice_Dalderup@hotmail.com>",
-  "main": "index.js",
+  "main": "dist/index.js",
   "private": false,
   "engines": {
     "node": ">=8.10.0",
@@ -16,9 +16,10 @@
     "prestart": "npm run scripts && cd ./scripts && ./startNetwork.sh",
     "start": "gulp serve",
     "start:debug": "cross-env DEBUG=express-hlf-example:* yarn start",
+    "startServer":"gulp serve",
     "lint": "esw *.js server config --color --fix",
     "lint:watch": "yarn lint -- --watch",
-    "precommit": "yarn lint && yarn test",
+    "precommit": "yarn lint",
     "test": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --ui bdd --reporter spec --colors server --recursive",
     "test:watch": "yarn test -- --watch",
     "test:coverage": "cross-env NODE_ENV=test ./node_modules/.bin/istanbul cover _mocha -- --ui bdd --reporter spec --colors server --recursive",
@@ -115,8 +116,11 @@
       "test": {
         "presets": [
           "env",
-          "babel-polyfill",
-          "stage-2"
+          "stage-2",
+          "babel-polyfill"
+        ],
+        "plugins": [
+          "add-module-exports"
         ]
       }
     }
