@@ -30,7 +30,7 @@ gulp.task('babel', () =>
     .pipe(plugins.newer('dist'))
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.babel({
-      presets: ['babel-polyfill', 'env', 'es2015', 'stage-2']
+      presets: ['babel-polyfill', 'env', 'stage-2']
     }))
     .pipe(plugins.sourcemaps.write('.', {
       includeContent: false,

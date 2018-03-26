@@ -1,8 +1,9 @@
-'use strict';
+
 import Joi from 'joi';
 
 // require and configure dotenv, will load vars in .env in PROCESS.ENV
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 // define validation for all the env vars
@@ -20,12 +21,12 @@ const envVarsSchema = Joi.object({
   USE_DB: Joi.boolean().default(false)
 }).unknown().required();
 
-const _Joi$validate = Joi.validate(process.env, envVarsSchema),
-    error = _Joi$validate.error,
-    envVars = _Joi$validate.value;
+const _Joi$validate = Joi.validate(process.env, envVarsSchema);
+const error = _Joi$validate.error;
+const envVars = _Joi$validate.value;
 
 if (error) {
-  throw new Error('Config validation error: ' + error.message);
+  throw new Error(`Config validation error: ${error.message}`);
 }
 
 const config = {

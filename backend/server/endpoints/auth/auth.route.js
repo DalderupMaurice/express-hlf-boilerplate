@@ -2,9 +2,9 @@ import { Router } from 'express';
 import validate from 'express-validation';
 import expressJwt from 'express-jwt';
 
-import paramValidation from '../../config/param-validation';
+import paramValidation from '../../../config/param-validation';
 import authCtrl from './auth.controller';
-import config from '../../config/config';
+import config from '../../../config/config';
 
 const router = Router(); // eslint-disable-line new-cap
 

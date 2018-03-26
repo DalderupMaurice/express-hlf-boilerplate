@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import httpStatus from 'http-status';
 
-import APIError from '../helpers/APIError';
-import config from '../../config/config';
+import APIError from '../../helpers/APIError';
+import config from '../../../config/config';
 
 // sample user, used for authentication
 const user = {
@@ -40,12 +40,11 @@ const login = (req, res, next) => {
  * @param res
  * @returns {*}
  */
-const getRandomNumber = (req, res) => {
+const getRandomNumber = (req, res) =>
   // req.user is assigned by jwt middleware if valid token is provided
-  return res.json({
-    user: req.user,
-    num: Math.random() * 100
-  });
-};
+   res.json({
+     user: req.user,
+     num: Math.random() * 100
+   });
 
 export default { login, getRandomNumber };

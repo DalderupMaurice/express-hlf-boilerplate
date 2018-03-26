@@ -1,5 +1,9 @@
 {
   "rules": {
+    // Custom rules
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
+    "arrow-parens": ["error", "as-needed"],
+    // Default rules
     "indent": [
       2,
       2,

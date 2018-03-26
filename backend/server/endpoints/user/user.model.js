@@ -1,9 +1,7 @@
-'use strict';
-
 import Promise from 'bluebird';
 import mongoose from 'mongoose';
 import httpStatus from 'http-status';
-import APIError from '../helpers/APIError';
+import APIError from '../../helpers/APIError';
 
 /**
  * User Schema
@@ -46,7 +44,7 @@ UserSchema.statics = {
    * @returns {Promise<User, APIError>}
    */
   get: function get(id) {
-    return this.findById(id).exec().then((user) => {
+    return this.findById(id).exec().then(user => {
       if (user) {
         return user;
       }
@@ -62,14 +60,15 @@ UserSchema.statics = {
    * @param {number} limit - Limit number of users to be returned.
    * @returns {Promise<User[]>}
    */
-  list: function list() {
-    const _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-        _ref$skip = _ref.skip,
-        skip = _ref$skip === undefined ? 0 : _ref$skip,
-        _ref$limit = _ref.limit,
-        limit = _ref$limit === undefined ? 50 : _ref$limit;
+  list: function list(...args) {
+    const _ref = args.length > 0 && args[0] !== undefined ? args[0] : {};
+    const _ref$skip = _ref.skip;
+    const skip = _ref$skip === undefined ? 0 : _ref$skip;
+    const _ref$limit = _ref.limit;
+    const limit = _ref$limit === undefined ? 50 : _ref$limit;
 
-    return this.find().sort({ createdAt: -1 }).skip(+skip).limit(+limit).exec();
+    return this.find().sort({ createdAt: -1 }).skip(+skip).limit(+limit)
+      .exec();
   }
 };
 

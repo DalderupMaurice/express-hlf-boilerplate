@@ -3,8 +3,8 @@ import httpStatus from 'http-status';
 import jwt from 'jsonwebtoken';
 import chai from 'chai';
 
-import app from '../../index';
-import config from '../../config/config';
+import app from '../../../index';
+import config from '../../../config/config';
 
 const expect = chai.expect;
 chai.config.includeStack = true;
