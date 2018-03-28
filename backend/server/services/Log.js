@@ -11,6 +11,6 @@ const Log = (label = 'FABRIC', level = 'debug') => new Logger({
     colorize: true,
   })],
   exitOnError: false,
-})
+});
 
 export default Log;
