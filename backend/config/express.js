@@ -79,10 +79,10 @@ if (config.env !== 'test') {
 
 // error handler, send stacktrace only during development
 app.use((err, req, res, next) => (
-    res.status(err.status).json({
-      message: err.isPublic ? err.message : httpStatus[err.status],
-      stack: config.env === 'development' ? err.stack : {}
-    })
-  ));
+  res.status(err.status).json({
+    message: err.isPublic ? err.message : httpStatus[err.status],
+    stack: config.env === 'development' ? err.stack : {}
+  })
+));
 
 export default app;

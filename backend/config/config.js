@@ -22,7 +22,7 @@ const envVarsSchema = Joi.object({
 }).unknown().required();
 
 const _Joi$validate = Joi.validate(process.env, envVarsSchema);
-const error = _Joi$validate.error;
+const { error } = _Joi$validate;
 const envVars = _Joi$validate.value;
 
 if (error) {

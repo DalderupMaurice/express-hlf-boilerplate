@@ -1,9 +1,10 @@
+import 'babel-polyfill';
 
 import mongoose from 'mongoose';
 import util from 'util';
-
 // config should be imported before importing any other file
 import config from './config/config';
+import InitializeNetwork from './server/services/InitializeNetwork';
 
 import app from './config/express';
 
@@ -12,6 +13,7 @@ Promise = require('bluebird'); // eslint-disable-line no-global-assign
 
 // Debug props
 const debug = require('debug')('server:index');
+const init = new InitializeNetwork(); // eslint-disable-line
 
 
 // connect to mongo db
@@ -33,12 +35,12 @@ if (config.useDb) {
   }
 }
 
-
 if (!module.parent) {
   // listen on port config.port
   app.listen(config.port, () => {
     console.info(`server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
   });
 }
+
 
 export default app;

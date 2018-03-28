@@ -16,16 +16,17 @@ export ORDERER_ADDR="orderer.example.com:7050"
 
 
 # Local vars
-starttime=$(date +%s)
-versionNumber=$RANDOM
-frontendDirectory="../$CHAINCODE_NAME/src/services/"
-basicNetworkFolder="../../basic-network"
+starttime=$(date +%s) # timer
+versionNumber=$RANDOM # random versioning
+rootDir=$(dirname $(dirname "$PWD")) # Get root dir of project
+serviceDir="$rootDir/backend/dist/server/services" # dir with service layer
+basicNetworkDir="$rootDir/basic-network" # dir of basic network
 
 
 # See if basic network is present
-if [ -d "$basicNetworkFolder" ]; then
+if [ -d "$basicNetworkDir" ]; then
   # launch network; create channel and join peer to channel
-  cd ../../basic-network
+  cd $basicNetworkDir
   ./start.sh
 else
   printf "%40s\n" "$(tput setaf 1)Basic network was not found.$(tput sgr0)"
@@ -55,17 +56,6 @@ sleep 10
 # Invoking instantiate function
 docker exec -e $arg1 -e $arg2  cli peer chaincode invoke -C $CHANNEL_NAME -n $CHAINCODE_NAME -c '{"function":"initLedger","Args":[""]}'
 printf "\n%40s\n" "$(tput setaf 4)Chaincode $CHAINCODE_NAME version $versionNumber installed and initiated$(tput sgr0)"
-
-
-# See if frontend service layer exists and admin can be enrolled + user can be registered
-if [ -e "$frontendDirectory/enrollAdmin.js" ] && [ -e "$frontendDirectory/registerUser.js" ]; then
-  cd $frontendDirectory
-  node enrollAdmin.js
-  sleep 5
-  node registerUser.js
-else
-  printf "%40s\n" "$(tput setaf 1)Could not enroll admin and/or register user. 'enrollAdmin.js' and/or 'registerUser.js' not found in '$frontendDirectory'.$(tput sgr0)"
-fi
 
 
 printf "\n%40s\n" "$(tput setaf 2)Total setup execution time : $(($(date +%s) - starttime)) seconds.$(tput sgr0)"

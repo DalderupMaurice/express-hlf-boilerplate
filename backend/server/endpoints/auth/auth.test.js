@@ -6,7 +6,7 @@ import chai from 'chai';
 import app from '../../../index';
 import config from '../../../config/config';
 
-const expect = chai.expect;
+const { expect } = chai;
 chai.config.includeStack = true;
 
 describe('## Auth APIs', () => {

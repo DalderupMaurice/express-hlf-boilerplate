@@ -42,9 +42,9 @@ const login = (req, res, next) => {
  */
 const getRandomNumber = (req, res) =>
   // req.user is assigned by jwt middleware if valid token is provided
-   res.json({
-     user: req.user,
-     num: Math.random() * 100
-   });
+  res.json({
+    user: req.user,
+    num: Math.random() * 100
+  });
 
 export default { login, getRandomNumber };
