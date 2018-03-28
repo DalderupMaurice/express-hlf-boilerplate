@@ -74,7 +74,7 @@ export default class Network {
 
     // If user is already enrolled, return
     if (userFromStore && userFromStore.isEnrolled()) {
-      Logger('NETWORK').info(`User already enrolled. Returning from storage..`);
+      Logger('NETWORK').info('User already enrolled. Returning from storage..');
       return Promise.resolve(userFromStore);
     }
 
