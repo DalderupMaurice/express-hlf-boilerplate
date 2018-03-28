@@ -7,8 +7,6 @@ import Logger from '../services/Log';
 
 export default class Network {
   constructor(CA_NAME = 'ca.example.com', CA_URL = 'http://localhost:7054', ORG_MSP = 'Org1MSP') {
-    this.log = new Logger();
-
     // Create new fabric client instance
     this.fabricClient = new Fabric_Client();
     this.fabricCaClient = null;
@@ -24,7 +22,7 @@ export default class Network {
   initFabric = async (CA_NAME = this.CA_NAME, CA_URL = this.CA_URL) => {
     // Define storepath
     const storePath = path.join(os.homedir(), '.hfc-key-store');
-    this.log.info(`Store path is located at: ${storePath}`);
+    Logger('NETWORK').info(`Store path is located at: ${storePath}`);
 
     // Set new crypto suite
     const cryptoSuite = Fabric_Client.newCryptoSuite();
@@ -76,6 +74,7 @@ export default class Network {
 
     // If user is already enrolled, return
     if (userFromStore && userFromStore.isEnrolled()) {
+      Logger('NETWORK').info(`User already enrolled. Returning from storage..`);
       return Promise.resolve(userFromStore);
     }
 

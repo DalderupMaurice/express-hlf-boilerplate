@@ -16,16 +16,16 @@ Promise = require('bluebird'); // eslint-disable-line no-global-assign
 const debug = require('debug')('server:index');
 
 // Logging
-const log = new Logger();
+// const log = new Logger();
 
 const network = new Network(); // eslint-disable-line
 network.initFabric()
   .then(res => {
-    log.info(`${res.toString()}\n\n`);
+    Logger().info(`${res.toString()}\n\n`);
     if (res) return network.register('user1', 'org1.department1');
   })
-  .then(res => log.info(res.toString()))
-  .catch(err => log.warn(err.message));
+  .then(res => Logger().info(`${res.toString()}\n\n`))
+  .catch(err => Logger().info(`${err.message}\n\n`));
 
 
 // connect to mongo db
@@ -50,7 +50,7 @@ if (config.useDb) {
 if (!module.parent) {
   // listen on port config.port
   app.listen(config.port, () => {
-    log.info(`server started on port ${config.port} (${config.env})`);
+    Logger().info(`server started on port ${config.port} (${config.env})`);
   });
 }
 

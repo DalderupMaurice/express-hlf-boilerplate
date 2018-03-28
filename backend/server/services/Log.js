@@ -1,8 +1,8 @@
 import { Logger, transports } from 'winston';
 
-const Log = (label = 'FABRIC') => new Logger({
+const Log = (label = 'FABRIC', level = 'debug') => new Logger({
   transports: [new transports.Console({
-    level: 'debug',
+    level,
     prettyPrint: true,
     handleExceptions: true,
     json: false,
