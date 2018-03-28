@@ -3,6 +3,7 @@
     // Custom rules
     "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
     "arrow-parens": ["error", "as-needed"],
+    "consistent-return": "off",
     // Default rules
     "indent": [
       2,
