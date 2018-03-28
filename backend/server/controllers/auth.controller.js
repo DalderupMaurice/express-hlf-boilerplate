@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import httpStatus from 'http-status';
 
-import APIError from '../../helpers/APIError';
-import config from '../../../config/config';
+import APIError from '../utils/APIError';
+import config from '../../config/config';
 
 // sample user, used for authentication
 const user = {

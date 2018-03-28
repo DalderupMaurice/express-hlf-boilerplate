@@ -14,7 +14,7 @@ export default class InitializeNetwork {
   constructor() {
     this.enrollAdmin()
       // eslint-disable-next-line
-      .then(res => console.log(res)) 
+      .then(res => console.log(res))
       // eslint-disable-next-line
       .catch(err => console.log(`${err}
        ${'Authorization failures may be caused by having admin credentials from a previous CA instance.\n' +

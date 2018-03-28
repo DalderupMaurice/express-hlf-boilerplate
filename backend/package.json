@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Boilerplate application for building REST APIs using express and the fabric SDK.",
   "author": "Maurice Dalderup <Maurice_Dalderup@hotmail.com>",
-  "main": "dist/index.js",
+  "main": "dist/server/index.js",
   "private": false,
   "engines": {
     "node": ">=8.10.0",

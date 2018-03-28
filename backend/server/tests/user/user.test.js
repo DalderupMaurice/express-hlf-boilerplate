@@ -3,7 +3,7 @@ import request from 'supertest-as-promised';
 import httpStatus from 'http-status';
 import chai from 'chai';
 
-import app from '../../../index';
+import app from '../../index';
 
 const { expect } = chai;
 chai.config.includeStack = true;

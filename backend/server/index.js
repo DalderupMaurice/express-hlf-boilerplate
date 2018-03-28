@@ -3,16 +3,17 @@ import 'babel-polyfill';
 import mongoose from 'mongoose';
 import util from 'util';
 // config should be imported before importing any other file
-import config from './config/config';
-import InitializeNetwork from './server/services/InitializeNetwork';
+import config from '../config/config';
+import InitializeNetwork from './utils/InitializeNetwork';
 
-import app from './config/express';
+import app from '../config/express';
 
 // make bluebird default Promise
 Promise = require('bluebird'); // eslint-disable-line no-global-assign
 
 // Debug props
 const debug = require('debug')('server:index');
+
 const init = new InitializeNetwork(); // eslint-disable-line
 
 
