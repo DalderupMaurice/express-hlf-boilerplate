@@ -106,7 +106,7 @@
   "license": "MIT",
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "./backend/node_modules/cz-conventional-changelog"
     }
   },
   "babel": {

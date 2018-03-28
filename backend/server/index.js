@@ -15,9 +15,6 @@ Promise = require('bluebird'); // eslint-disable-line no-global-assign
 // Debug props
 const debug = require('debug')('server:index');
 
-// Logging
-// const log = new Logger();
-
 const network = new Network(); // eslint-disable-line
 network.initFabric()
   .then(res => {
