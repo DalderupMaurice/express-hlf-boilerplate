@@ -48,7 +48,8 @@ const config = {
   ],
   ORDERERS: [
     envVars.ORDERER1
-  ]
+  ],
+  EVENTHUB: envVars.EVENTHUB
 };
 
 export default config;

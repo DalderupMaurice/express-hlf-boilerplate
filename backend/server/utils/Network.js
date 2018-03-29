@@ -5,53 +5,95 @@ import Fabric_CA_Client from 'fabric-ca-client'; // eslint-disable-line
 import Logger from '../services/Log';
 import config from '../../config/config';
 
-export default class Network {
-  constructor() {
-    if (!Network.instance) {
-      // Create new fabric client instance
-      this.fabricClient = new Fabric_Client();
-      this.fabricCaClient = null;
-      this.channel = null;
-      this.adminUser = null;
-      this.memberUser = null;
+const fabricClient = new Fabric_Client();
+let fabricCaClient = null;
+let channel = null;
+let eventHub = null;
+let adminUser = null;
+let memberUser = null;
 
-      this.channelName = config.CHANNEL_NAME;
+const {
+  CHANNEL_NAME,
+  PEERS,
+  ORDERERS,
+  CA_NAME,
+  CA_URL,
+  ORG_MSP,
+  EVENTHUB
+} = config;
 
-      this.peers = config.PEERS;
-      this.orderers = config.ORDERERS;
 
-      this.CA_NAME = config.CA_NAME;
-      this.CA_URL = config.CA_URL;
+export default {
+  register: async (user, org, secret = null) => {
+    // Check is user is already enrolled or not
+    const userFromStore = await fabricClient.getUserContext(user, true);
 
-      this.ORG_MSP = config.ORG_MSP;
-      Network.instance = this;
+
+    // If user is already enrolled, return
+    if (userFromStore && userFromStore.isEnrolled()) {
+      Logger('NETWORK').info(`Returning from storage, ${userFromStore._name} is already enrolled.`);
+      return Promise.resolve(userFromStore);
     }
 
-    return Network.instance;
-  }
+
+    // If secret is given, use that. Else register and create secret
+    if (!secret) {
+      // eslint-disable-next-line no-param-reassign
+      secret = await fabricCaClient.register({
+        enrollmentID: user,
+        affiliation: org
+      }, adminUser).catch(err => Promise.reject(err));
+    }
 
 
-  getFabricInstance = () => this.fabricClient;
-  getChannel = () => this.channel;
+    // Enroll the user
+    const enrollment = await fabricCaClient.enroll({
+      enrollmentID: user,
+      enrollmentSecret: secret
+    }).catch(err => Promise.reject(err));
 
 
-  initFabric = async (CA_NAME = this.CA_NAME, CA_URL = this.CA_URL) => {
+    // Create the user
+    memberUser = await fabricClient.createUser({
+      username: user,
+      mspid: ORG_MSP,
+      cryptoContent: {
+        privateKeyPEM: enrollment.key.toBytes(),
+        signedCertPEM: enrollment.certificate
+      }
+    });
+
+
+    // Set user context to the new user
+    const userInStorage = await fabricClient.setUserContext(memberUser, false);
+    memberUser = userInStorage;
+
+
+    // Return statement
+    return Promise.resolve(userInStorage);
+  },
+
+  initFabric: async () => {
     // setup the fabric network
-    this.channel = this.fabricClient.newChannel(this.channelName);
+    channel = fabricClient.newChannel(CHANNEL_NAME);
 
 
     // Add peers
-    this.peers.map(peer => {
-      const currentPeer = this.fabricClient.newPeer(peer);
-      this.channel.addPeer(currentPeer);
+    PEERS.map(peer => {
+      const currentPeer = fabricClient.newPeer(peer);
+      channel.addPeer(currentPeer);
     });
 
 
     // Add orderers
-    this.orderers.map(orderer => {
-      const currentOrderer = this.fabricClient.newOrderer(orderer);
-      this.channel.addOrderer(currentOrderer);
+    ORDERERS.map(orderer => {
+      const currentOrderer = fabricClient.newOrderer(orderer);
+      channel.addOrderer(currentOrderer);
     });
+
+    // Add event hub
+    eventHub = fabricClient.newEventHub();
+    eventHub.setPeerAddr(EVENTHUB);
 
 
     // Define storepath
@@ -60,12 +102,12 @@ export default class Network {
 
     // Set new crypto suite
     const cryptoSuite = Fabric_Client.newCryptoSuite();
-    this.fabricClient.setCryptoSuite(cryptoSuite);
+    fabricClient.setCryptoSuite(cryptoSuite);
 
 
     // Set default key-value store to storePath
     const stateStore = await Fabric_Client.newDefaultKeyValueStore({ path: storePath });
-    this.fabricClient.setStateStore(stateStore);
+    fabricClient.setStateStore(stateStore);
 
 
     // Set crypto keystore to storePath
@@ -80,73 +122,27 @@ export default class Network {
 
     // Set Fabric Certificate Authority client
     // be sure to change the http to https when the CA is running TLS enabled
-    this.fabricCaClient = new Fabric_CA_Client(CA_URL, tlsOptions, CA_NAME, cryptoSuite);
+    fabricCaClient = new Fabric_CA_Client(CA_URL, tlsOptions, CA_NAME, cryptoSuite);
 
 
     // Check if admin is enrolled
-    const userFromStore = await this.fabricClient.getUserContext('admin', true);
+    const userFromStore = await fabricClient.getUserContext('admin', true);
 
 
     // If admin exists, set admin
     // Else enroll admin and set admin
     if (userFromStore && userFromStore.isEnrolled()) {
-      this.adminUser = userFromStore;
+      adminUser = userFromStore;
     } else {
       // TODO no hardcoding
-      this.adminUser = await this.register('admin', 'org1.department1', 'adminpw');
+      adminUser = await register('admin', 'org1.department1', 'adminpw'); // eslint-disable-line
     }
 
     // Return statement
-    return Promise.resolve(this.adminUser);
-  };
+    return Promise.resolve(adminUser);
+  },
 
-
-  register = async (user, org, secret = null) => {
-    // Check is user is already enrolled or not
-    const userFromStore = await this.fabricClient.getUserContext(user, true);
-
-
-    // If user is already enrolled, return
-    if (userFromStore && userFromStore.isEnrolled()) {
-      Logger('NETWORK').info(`Returning from storage, ${userFromStore._name} is already enrolled.`);
-      return Promise.resolve(userFromStore);
-    }
-
-
-    // If secret is given, use that. Else register and create secret
-    if (!secret) {
-      // eslint-disable-next-line no-param-reassign
-      secret = await this.fabricCaClient.register({
-        enrollmentID: user,
-        affiliation: org
-      }, this.adminUser).catch(err => Promise.reject(err));
-    }
-
-
-    // Enroll the user
-    const enrollment = await this.fabricCaClient.enroll({
-      enrollmentID: user,
-      enrollmentSecret: secret
-    }).catch(err => Promise.reject(err));
-
-
-    // Create the user
-    this.memberUser = await this.fabricClient.createUser({
-      username: user,
-      mspid: this.ORG_MSP,
-      cryptoContent: {
-        privateKeyPEM: enrollment.key.toBytes(),
-        signedCertPEM: enrollment.certificate
-      }
-    });
-
-
-    // Set user context to the new user
-    const userInStorage = await this.fabricClient.setUserContext(this.memberUser, false);
-    this.memberUser = userInStorage;
-
-
-    // Return statement
-    return Promise.resolve(userInStorage);
-  };
-}
+  getFabricClient: () => fabricClient,
+  getChannel: () => channel,
+  getEventHub: () => eventHub
+};

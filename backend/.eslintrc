@@ -49,11 +49,6 @@
     "ecmaVersion": 2017,
     "sourceType": "module"
   },
-  "ecmaFeatures": {
-    "modules":true,
-    "arrowFunctions":true,
-    "classes":true
-  },
   "extends": [
     "eslint:recommended",
     "airbnb-base"

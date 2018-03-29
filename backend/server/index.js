@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import util from 'util';
 // config should be imported before importing any other file
 import config from '../config/config';
-import Network from './utils/Network';
+import network from './utils/Network';
 
 import app from '../config/express';
 import Logger from './services/Log';
@@ -15,7 +15,6 @@ Promise = require('bluebird'); // eslint-disable-line no-global-assign
 // Debug props
 const debug = require('debug')('server:index');
 
-const network = new Network(); // eslint-disable-line
 network.initFabric()
   .then(res => {
     Logger().info(`${res.toString()}\n\n`);
