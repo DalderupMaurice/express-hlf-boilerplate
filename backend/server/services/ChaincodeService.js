@@ -12,7 +12,7 @@ export default class ChaincodeService {
   }
 
   // TODO no hardconding
-  invoke = (user = 'user1') => new Promise((async (resolve, reject) => {
+  invoke = (user = 'user4') => new Promise((async (resolve, reject) => {
     this.fabricClient = network.getFabricClient();
     this.channel = network.getChannel();
 
@@ -25,10 +25,10 @@ export default class ChaincodeService {
     // TODO error handling - wrong fcn name
     const request = {
       // targets: let default to the peer assigned to the client
-      chaincodeId: 'watchmovement-app', // TOOD config
+      chaincodeId: 'watchmovement-app', // TODO config
       fcn: 'initLedger',
       args: [''],
-      chainId: 'mychannel', // TOOD CONFIG
+      chainId: 'mychannel', // TODO CONFIG
       txId
     };
 

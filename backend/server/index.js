@@ -18,7 +18,7 @@ const debug = require('debug')('server:index');
 network.initFabric()
   .then(res => {
     Logger().info(`${res.toString()}\n\n`);
-    if (res) return network.register('user1', 'org1.department1');
+    if (res) return network.register('user4', 'org1.department1');
   })
   .then(res => Logger().info(`${res.toString()}\n\n`))
   .catch(err => Logger().info(`${err.message}\n\n`));
