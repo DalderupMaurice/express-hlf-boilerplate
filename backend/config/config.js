@@ -38,7 +38,17 @@ const config = {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT
   },
-  useDb: envVars.USE_DB
+  useDb: envVars.USE_DB,
+  ORG_MSP: envVars.ORG_MSP,
+  CHANNEL_NAME: envVars.CHANNEL_NAME,
+  CA_NAME: envVars.CA_NAME,
+  CA_URL: envVars.CA_URL,
+  PEERS: [
+    envVars.PEER1
+  ],
+  ORDERERS: [
+    envVars.ORDERER1
+  ]
 };
 
 export default config;

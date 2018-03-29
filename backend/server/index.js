@@ -24,7 +24,6 @@ network.initFabric()
   .then(res => Logger().info(`${res.toString()}\n\n`))
   .catch(err => Logger().info(`${err.message}\n\n`));
 
-
 // connect to mongo db
 if (config.useDb) {
   // plugin bluebird promise in mongoose

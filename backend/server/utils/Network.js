@@ -3,23 +3,57 @@ import os from 'os';
 import Fabric_Client from 'fabric-client'; // eslint-disable-line
 import Fabric_CA_Client from 'fabric-ca-client'; // eslint-disable-line
 import Logger from '../services/Log';
-
+import config from '../../config/config';
 
 export default class Network {
-  constructor(CA_NAME = 'ca.example.com', CA_URL = 'http://localhost:7054', ORG_MSP = 'Org1MSP') {
-    // Create new fabric client instance
-    this.fabricClient = new Fabric_Client();
-    this.fabricCaClient = null;
-    this.adminUser = null;
-    this.memberUser = null;
+  constructor() {
+    if (!Network.instance) {
+      // Create new fabric client instance
+      this.fabricClient = new Fabric_Client();
+      this.fabricCaClient = null;
+      this.channel = null;
+      this.adminUser = null;
+      this.memberUser = null;
 
-    this.CA_NAME = CA_NAME;
-    this.CA_URL = CA_URL;
-    this.ORG_MSP = ORG_MSP;
+      this.channelName = config.CHANNEL_NAME;
+
+      this.peers = config.PEERS;
+      this.orderers = config.ORDERERS;
+
+      this.CA_NAME = config.CA_NAME;
+      this.CA_URL = config.CA_URL;
+
+      this.ORG_MSP = config.ORG_MSP;
+      Network.instance = this;
+    }
+
+    return Network.instance;
   }
 
 
+  getFabricInstance = () => this.fabricClient;
+  getChannel = () => this.channel;
+
+
   initFabric = async (CA_NAME = this.CA_NAME, CA_URL = this.CA_URL) => {
+    // setup the fabric network
+    this.channel = this.fabricClient.newChannel(this.channelName);
+
+
+    // Add peers
+    this.peers.map(peer => {
+      const currentPeer = this.fabricClient.newPeer(peer);
+      this.channel.addPeer(currentPeer);
+    });
+
+
+    // Add orderers
+    this.orderers.map(orderer => {
+      const currentOrderer = this.fabricClient.newOrderer(orderer);
+      this.channel.addOrderer(currentOrderer);
+    });
+
+
     // Define storepath
     const storePath = path.join(os.homedir(), '.hfc-key-store');
     Logger('NETWORK').info(`Store path is located at: ${storePath}`);
@@ -58,9 +92,9 @@ export default class Network {
     if (userFromStore && userFromStore.isEnrolled()) {
       this.adminUser = userFromStore;
     } else {
+      // TODO no hardcoding
       this.adminUser = await this.register('admin', 'org1.department1', 'adminpw');
     }
-
 
     // Return statement
     return Promise.resolve(this.adminUser);
@@ -74,7 +108,7 @@ export default class Network {
 
     // If user is already enrolled, return
     if (userFromStore && userFromStore.isEnrolled()) {
-      Logger('NETWORK').info('User already enrolled. Returning from storage..');
+      Logger('NETWORK').info(`Returning from storage, ${userFromStore._name} is already enrolled.`);
       return Promise.resolve(userFromStore);
     }
 
