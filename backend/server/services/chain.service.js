@@ -52,7 +52,6 @@ export default class ChaincodeService {
     resolve(JSON.parse(queryResult[0].toString()));
   }));
 
-  // TODO no hardconding
   invoke = request => new Promise((async (resolve, reject) => {
     const proposalResult = await this.channel.sendTransactionProposal(request)
       .catch(err => reject(err));
@@ -73,6 +72,7 @@ export default class ChaincodeService {
 
   processProposal = async (proposal, proposalResponses, txId) => {
     this.eventHub = network.getEventHub();
+    const txIdString = txId.getTransactionID();
 
     Logger(labels.PROPOSAL).info(`Successfully sent Proposal and received ProposalResponse: 
         Status - ${proposalResponses[0].response.status}
@@ -84,36 +84,27 @@ export default class ChaincodeService {
       proposal
     };
 
-    // set the transaction listener and set a timeout of 30 sec
-    // if the transaction did not get committed within the timeout period,
-    // report a TIMEOUT status
-    // Get the transaction ID string to be used by the event processing
-    const txIdString = txId.getTransactionID();
-
     const transaction = await this.channel.sendTransaction(request);
 
     this.eventHub.connect();
     const eventPromise = new Promise(async (resolve, reject) => {
-      this.eventHub.registerTxEvent(txIdString, (tx, code) => {
+      this.eventHub.registerTxEvent(txIdString, (tx, statusCode) => {
         this.eventHub.unregisterTxEvent(txIdString);
         this.eventHub.disconnect();
 
-        // now let the application know what happened
-        const returnStatus = { event_status: code, tx_id: txIdString };
-        if (code !== 'VALID') {
-          reject(new Error(`Problem with the tranaction, event status ::${code}`));
-        } else {
-          Logger(labels.TRANSACTION).info(`The transaction has been committed on peer ${this.eventHub._ep._endpoint.addr}`);
-          resolve(returnStatus);
+        const returnStatus = { statusCode, tx };
+        if (statusCode !== 'VALID') {
+          reject(new Error(`Problem with the tranaction, event status ::${statusCode}`));
         }
+        Logger(labels.TRANSACTION).info(`The transaction has been committed on peer ${this.eventHub._ep._endpoint.addr}`);
+        resolve(returnStatus);
       }, err => {
         this.eventHub.disconnect();
-        // this is the callback if something goes wrong with the event registration or processing
         reject(new Error(`There was a problem with the eventhub ::${err}`));
       });
     });
 
     const eventResult = await eventPromise;
-    return { transaction, eventResult };
+    return { ...transaction, ...eventResult };
   }
 }
