@@ -7,9 +7,7 @@ const chaincodeService = new ChaincodeService();
 
 /**
  * Initializes the ledger
- * @property {string} req.body.username - The username of user.
- * @property {string} req.body.mobileNumber - The mobileNumber of user.
- * @returns {User}
+ * @returns {Transaction}
  */
 const init = async (req, res, next) => {
   try {
@@ -27,7 +25,7 @@ const init = async (req, res, next) => {
  * @property {string} req.body.user - The name of the user.
  * @property {string} req.body.function - The name of the function.
  * @property {array} req.body.funcArgs- An array of string arguments.
- * @returns {User}
+ * @returns {json}
  */
 const queryAll = async (req, res, next) => {
   try {
