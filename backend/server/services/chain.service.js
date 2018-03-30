@@ -47,10 +47,15 @@ export default class ChaincodeService {
     }
 
     if (queryResult[0] instanceof Error) {
-      return reject(new APIError('Error from query (wrong query name?)', httpStatus.BAD_REQUEST));
+      return reject(new APIError(`Error from query: ${queryResult[0].message} `, httpStatus.BAD_REQUEST));
     }
 
-    resolve(JSON.parse(queryResult[0].toString()));
+    try {
+      const parsedResult = JSON.parse(queryResult[0].toString());
+      resolve(parsedResult);
+    } catch (e) {
+      return reject(new APIError(`Failed to parse: ${e.message}`, httpStatus.INTERNAL_SERVER_ERROR));
+    }
   }));
 
 
