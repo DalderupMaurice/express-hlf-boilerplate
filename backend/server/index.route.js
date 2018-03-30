@@ -1,6 +1,4 @@
-
 import { Router } from 'express';
-import expressQueueMw from 'express-queue';
 
 import userRoutes from './endpoints/user/user.route';
 import authRoutes from './endpoints/auth/auth.route';
@@ -18,6 +16,6 @@ router.use('/api/users', userRoutes);
 router.use('/api/auth', authRoutes);
 
 // mount chaincode routes at /chain
-router.use('/api/chain', chainRoutes, expressQueueMw({ activeLimit: 1 }));
+router.use('/api/chain', chainRoutes);
 
 export default router;
