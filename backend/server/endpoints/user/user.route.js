@@ -3,8 +3,8 @@
 import { Router } from 'express';
 import validate from 'express-validation';
 
-import paramValidation from '../../config/param-validation';
-import userCtrl from '../controllers/user.controller';
+import paramValidation from '../../../config/param-validation';
+import userCtrl from './user.controller';
 
 const router = Router(); // eslint-disable-line new-cap
 

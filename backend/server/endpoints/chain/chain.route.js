@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import chainCtrl from '../controllers/chaincode.controller';
+import chainCtrl from './chain.controller';
 
 const router = Router(); // eslint-disable-line new-cap
 

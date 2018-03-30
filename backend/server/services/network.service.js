@@ -2,7 +2,9 @@ import path from 'path';
 import os from 'os';
 import Fabric_Client from 'fabric-client'; // eslint-disable-line
 import Fabric_CA_Client from 'fabric-ca-client'; // eslint-disable-line
-import Logger from '../services/Log';
+
+import Logger from '../../config/Log';
+import * as labels from '../../config/labels';
 import config from '../../config/config';
 
 const fabricClient = new Fabric_Client();
@@ -31,7 +33,7 @@ const register = async (user, org, secret = null) => {
 
   // If user is already enrolled, return
   if (userFromStore && userFromStore.isEnrolled()) {
-    Logger('NETWORK').info(`Returning from storage, ${userFromStore._name} is already enrolled.`);
+    Logger(labels.NETWORK).info(`Returning from storage, ${userFromStore._name} is already enrolled.`);
     return Promise.resolve(userFromStore);
   }
 
@@ -99,7 +101,7 @@ const initFabric = async () => {
 
   // Define storepath
   const storePath = path.join(os.homedir(), '.hfc-key-store');
-  Logger('NETWORK').info(`Store path is located at: ${storePath}`);
+  Logger(labels.NETWORK).info(`Store path is located at: ${storePath}`);
 
   // Set new crypto suite
   const cryptoSuite = Fabric_Client.newCryptoSuite();

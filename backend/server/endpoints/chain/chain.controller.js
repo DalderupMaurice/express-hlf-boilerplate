@@ -1,8 +1,7 @@
 import httpStatus from 'http-status';
 
-import ChaincodeService from '../services/ChaincodeService';
-import APIError from '../utils/APIError';
-
+import ChaincodeService from '../../services/chain.service';
+import APIError from '../../utils/APIError';
 
 const chaincodeService = new ChaincodeService();
 

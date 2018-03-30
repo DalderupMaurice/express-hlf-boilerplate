@@ -1,9 +1,9 @@
 
 import { Router } from 'express';
 
-import userRoutes from './user.route';
-import authRoutes from './auth.route';
-import chainRoutes from './chaincode.route';
+import userRoutes from './endpoints/user/user.route';
+import authRoutes from './endpoints/auth/auth.route';
+import chainRoutes from './endpoints/chain/chain.route';
 
 const router = Router(); // eslint-disable-line new-cap
 

@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
 
-import network from '../utils/Network';
-import Logger from '../services/Log';
-import * as labels from '../utils/labels';
+import network from './network.service';
+import Logger from '../../config/Log';
+import * as labels from '../../config/labels';
 import config from '../../config/config';
 import APIError from '../utils/APIError';
 
@@ -74,7 +74,9 @@ export default class ChaincodeService {
   processProposal = async (proposal, proposalResponses, txId) => {
     this.eventHub = network.getEventHub();
 
-    Logger('PROPOSAL').info(`Successfully sent Proposal and received ProposalResponse: Status - ${proposalResponses[0].response.status}, message - "${proposalResponses[0].response.message}"`);
+    Logger(labels.PROPOSAL).info(`Successfully sent Proposal and received ProposalResponse: 
+        Status - ${proposalResponses[0].response.status}
+        message - "${proposalResponses[0].response.message}"`);
 
     // build up the request for the orderer to have the transaction committed
     const request = {

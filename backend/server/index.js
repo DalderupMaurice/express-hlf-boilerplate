@@ -4,10 +4,10 @@ import mongoose from 'mongoose';
 import util from 'util';
 // config should be imported before importing any other file
 import config from '../config/config';
-import network from './utils/Network';
+import network from './services/network.service';
 
 import app from '../config/express';
-import Logger from './services/Log';
+import Logger from '../config/Log';
 
 // make bluebird default Promise
 Promise = require('bluebird'); // eslint-disable-line no-global-assign

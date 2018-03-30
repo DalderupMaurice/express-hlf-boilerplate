@@ -11,7 +11,7 @@ import expressValidation from 'express-validation';
 import helmet from 'helmet';
 import winstonInstance from 'winston';
 
-import routes from '../server/routes/index.route';
+import routes from '../server/index.route';
 import config from './config';
 import APIError from '../server/utils/APIError';
 
@@ -41,6 +41,8 @@ if (config.env === 'development') {
   expressWinston.responseWhitelist.push('body');
   app.use(expressWinston.logger({
     winstonInstance,
+    expressFormat: true,
+    colorize: true,
     meta: true, // optional: log meta data about request (defaults to true)
     msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
     colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
