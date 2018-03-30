@@ -20,7 +20,6 @@ after(done => {
 });
 
 describe('## User APIs', () => {
-  // TODO Object.assign
   let user = {
     username: 'KK123',
     mobileNumber: '1234567890'

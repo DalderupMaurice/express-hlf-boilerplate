@@ -15,17 +15,17 @@ export default class ChaincodeService {
     this.eventHub = null;
   }
 
+
   prepareRequest = async (user, functionName, funcArgs = [''], invocation = true) => new Promise((async (resolve, reject) => {
     this.fabricClient = network.getFabricClient();
     this.channel = network.getChannel();
 
     const userContext = await this.fabricClient.getUserContext(user, true)
       .catch(err => reject(err));
-    if (!validateUser(userContext)) reject(new Error('User not yet enrolled.'));
+    if (!validateUser(userContext)) return reject(new Error('User not yet enrolled.'));
 
     const txId = this.fabricClient.newTransactionID();
 
-    // TODO error handling - wrong fcn name
     const request = {
       // targets: let default to the peer assigned to the client
       chaincodeId: config.CHAINCODE_NAME,
@@ -37,20 +37,22 @@ export default class ChaincodeService {
     resolve(request);
   }));
 
+
   query = async request => new Promise((async (resolve, reject) => {
     const queryResult = await this.channel.queryByChaincode(request)
       .catch(err => reject(err));
 
     if (!(queryResult && queryResult.length === config.PEERS.length)) {
-      reject(new APIError('No payloads were returned from query', httpStatus.BAD_REQUEST));
+      return reject(new APIError('No payloads were returned from query', httpStatus.BAD_REQUEST));
     }
 
     if (queryResult[0] instanceof Error) {
-      reject(new APIError('Error from query', httpStatus.BAD_REQUEST));
+      return reject(new APIError('Error from query (wrong query name?)', httpStatus.BAD_REQUEST));
     }
 
     resolve(JSON.parse(queryResult[0].toString()));
   }));
+
 
   invoke = request => new Promise((async (resolve, reject) => {
     const proposalResult = await this.channel.sendTransactionProposal(request)
@@ -69,6 +71,7 @@ export default class ChaincodeService {
 
     resolve(result);
   }));
+
 
   processProposal = async (proposal, proposalResponses, txId) => {
     this.eventHub = network.getEventHub();
@@ -94,13 +97,13 @@ export default class ChaincodeService {
 
         const returnStatus = { statusCode, tx };
         if (statusCode !== 'VALID') {
-          reject(new Error(`Problem with the tranaction, event status ::${statusCode}`));
+          return reject(new Error(`Problem with the tranaction, event status ::${statusCode}`));
         }
         Logger(labels.TRANSACTION).info(`The transaction has been committed on peer ${this.eventHub._ep._endpoint.addr}`);
         resolve(returnStatus);
       }, err => {
         this.eventHub.disconnect();
-        reject(new Error(`There was a problem with the eventhub ::${err}`));
+        return reject(new Error(`There was a problem with the eventhub ::${err}`));
       });
     });
 
