@@ -57,8 +57,8 @@ const queryByArgs = async (req, res, next) => {
 };
 
 const add = async (req, res, next) => {
-
   // Important - order matters!!
+  // TODO remove toString() after param validation
   const movement = {
     Key: uuid(),
     Timestamp: moment().unix().toString(),
@@ -77,10 +77,29 @@ const add = async (req, res, next) => {
   }
 };
 
+const transfer = async (req, res, next) => {
+  // Important - order matters!!
+  // TODO remove toString() after param validation
+  const movement = {
+    Key: req.body.key.toString(),
+    Holder: req.body.holder
+  };
+
+  try {
+    const request = await chaincodeService.prepareRequest('user4', 'changeWatchMovementHolder', Object.values(movement));
+    const initResult = await chaincodeService.invoke(request);
+    res.json(initResult);
+  } catch (e) {
+    const err = new APIError(e.message, httpStatus.BAD_REQUEST, true);
+    next(err);
+  }
+};
+
 
 export default {
   init,
   queryAll,
   queryByArgs,
-  add
+  add,
+  transfer
 };
