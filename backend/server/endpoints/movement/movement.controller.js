@@ -11,19 +11,29 @@ const chaincodeService = new ChaincodeService();
 
 /**
  * Initializes the ledger
+ * @returns {Transaction}
+ */
+const init = async (req, res, next) => {
+  try {
+    const request = await chaincodeService.prepareRequest('user4', 'initLedger', ['']);
+    const initResult = await chaincodeService.invoke(request);
+    res.json(initResult);
+  } catch (e) {
+    const err = new APIError(e.message, httpStatus.BAD_REQUEST, true);
+    next(err);
+  }
+};
+
+/**
+ * Initializes the ledger
  * @property {string} req.body.user - The name of the user.
  * @property {string} req.body.function - The name of the function.
  * @property {array} req.body.funcArgs- An array of string arguments.
  * @returns {json}
  */
-const query = async (req, res, next) => {
-  const { funcName } = req.params;
-  const funcArgs = req.body.funcArgs ? { ...req.body.funcArgs } : { funcArgs: '' };
-
-  if (!funcName) return next(new APIError('Arguments missing', httpStatus.BAD_REQUEST, true));
-
+const queryAll = async (req, res, next) => {
   try {
-    const request = await chaincodeService.prepareRequest('user4', funcName, Object.values(funcArgs), false);
+    const request = await chaincodeService.prepareRequest('user4', 'queryAllWatchMovement', [''], false);
     const initResult = await chaincodeService.query(request);
     res.json(initResult);
   } catch (e) {
@@ -32,7 +42,21 @@ const query = async (req, res, next) => {
   }
 };
 
-const invoke = async (req, res, next) => {
+const queryByArgs = async (req, res, next) => {
+  const funcArgs = req.param('id');
+  if (!funcArgs) return next(new APIError('Arguments missing', httpStatus.BAD_REQUEST, true));
+
+  try {
+    const request = await chaincodeService.prepareRequest('user4', 'queryWatchMovement', [funcArgs], false);
+    const initResult = await chaincodeService.query(request);
+    res.json(initResult);
+  } catch (e) {
+    const err = new APIError(e.message, httpStatus.BAD_REQUEST, true);
+    next(err);
+  }
+};
+
+const add = async (req, res, next) => {
   // Important - order matters!!
   // TODO remove toString() after param validation
   const movement = {
@@ -53,7 +77,6 @@ const invoke = async (req, res, next) => {
   }
 };
 
-/*
 const transfer = async (req, res, next) => {
   // Important - order matters!!
   // TODO remove toString() after param validation
@@ -63,8 +86,7 @@ const transfer = async (req, res, next) => {
   };
 
   try {
-    const request = await chaincodeService.prepareRequest('user4',
-    'changeWatchMovementHolder', Object.values(movement));
+    const request = await chaincodeService.prepareRequest('user4', 'changeWatchMovementHolder', Object.values(movement));
     const initResult = await chaincodeService.invoke(request);
     res.json(initResult);
   } catch (e) {
@@ -72,9 +94,12 @@ const transfer = async (req, res, next) => {
     next(err);
   }
 };
-*/
+
 
 export default {
-  query,
-  invoke
+  init,
+  queryAll,
+  queryByArgs,
+  add,
+  transfer
 };

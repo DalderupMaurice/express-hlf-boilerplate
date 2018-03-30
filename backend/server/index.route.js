@@ -3,6 +3,7 @@ import { Router } from 'express';
 import userRoutes from './endpoints/user/user.route';
 import authRoutes from './endpoints/auth/auth.route';
 import chainRoutes from './endpoints/chain/chain.route';
+import movementRoutes from './endpoints/movement/movement.route';
 
 const router = Router(); // eslint-disable-line new-cap
 
@@ -17,5 +18,8 @@ router.use('/api/auth', authRoutes);
 
 // mount chaincode routes at /chain
 router.use('/api/chain', chainRoutes);
+
+// mount movement routes at /movement
+router.use('/api/movement', movementRoutes);
 
 export default router;
