@@ -11,9 +11,9 @@
     "yarn": ">=1.5.1"
   },
   "scripts": {
-    "scripts": "chmod +x ./scripts/* && chmod +x ../basic-network/*.sh",
+    "scripts": "chmod +x ./bin/* && chmod +x ../basic-network/*.sh",
     "buildChaincode": "npm run scripts && cd ./scripts && ./buildChaincode.sh",
-    "prestart": "npm run scripts && cd ./scripts && ./startNetwork.sh",
+    "prestart": "npm run scripts && cd ./bin && ./startNetwork.sh",
     "start": "gulp serve",
     "start:debug": "cross-env DEBUG=express-hlf-example:* yarn start",
     "startServer": "gulp serve",
