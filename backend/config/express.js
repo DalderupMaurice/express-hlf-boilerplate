@@ -10,6 +10,7 @@ import expressWinston from 'express-winston';
 import expressValidation from 'express-validation';
 import helmet from 'helmet';
 import winstonInstance from 'winston';
+import queue from 'express-queue';
 
 import routes from '../server/index.route';
 import config from './config';
@@ -34,6 +35,9 @@ app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
+
+// TODO proper queue'ing instead of blocking
+app.use(queue({ activeLimit: 1, queuedLimit: -1 }));
 
 // enable detailed API logging in dev env
 if (config.env === 'development') {

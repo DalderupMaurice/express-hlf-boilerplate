@@ -8,8 +8,29 @@ router.route('/init')
   /** GET /api/chain/init - Initialize the chaincode/ledger */
   .get(chainCtrl.init);
 
+
+router.route('/query/all')
+  /** GET /api/chain/query/all - Queries the complete ledger */
+  .get(chainCtrl.queryAll);
+
+
 router.route('/query')
-  /** GET /api/chain/query - Queries the complete ledger */
+/** GET /api/chain/query/all - Queries the complete ledger */
   .get(chainCtrl.queryAll);
 
 export default router;
+
+
+/*
+get
+initLedger
+
+queryAllWatchMovement
+queryWatchMovement
+
+post
+recordWatchMovement
+
+update
+changeWatchMovementHolder
+ */

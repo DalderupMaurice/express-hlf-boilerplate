@@ -2360,6 +2360,12 @@ expect-ct@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/expect-ct/-/expect-ct-0.1.0.tgz#52735678de18530890d8d7b95f0ac63640958094"
 
+express-end@0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/express-end/-/express-end-0.0.8.tgz#0c8fd95428932158f2b4cf91f4045346bf2c5323"
+  dependencies:
+    debug "^2.2.0"
+
 express-jwt@^5.3.1:
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/express-jwt/-/express-jwt-5.3.1.tgz#66f05c7dddb5409c037346a98b88965bb10ea4ae"
@@ -2368,6 +2374,14 @@ express-jwt@^5.3.1:
     express-unless "^0.3.0"
     jsonwebtoken "^8.1.0"
     lodash.set "^4.0.0"
+
+express-queue@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/express-queue/-/express-queue-0.0.11.tgz#8f3ea720d9e639ed411aff66621125fcc5c91ffe"
+  dependencies:
+    debug "^3.1.0"
+    express-end "0.0.8"
+    mini-queue "0.0.14"
 
 express-unless@^0.3.0:
   version "0.3.0"
@@ -4575,6 +4589,12 @@ mime@^1.4.1:
 mimic-fn@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
+
+mini-queue@0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/mini-queue/-/mini-queue-0.0.14.tgz#83d2f3f908e3cac5390bd986d1e6fbbfa0d95b93"
+  dependencies:
+    debug "^3.1.0"
 
 minimalistic-assert@^1.0.0:
   version "1.0.0"
