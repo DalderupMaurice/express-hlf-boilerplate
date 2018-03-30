@@ -1,6 +1,10 @@
+import httpStatus from 'http-status';
+
 import network from '../utils/Network';
 import Logger from '../services/Log';
 import * as labels from '../utils/labels';
+import config from '../../config/config';
+import APIError from '../utils/APIError';
 
 const validateUser = userContext => !!(userContext && userContext.isEnrolled());
 
@@ -11,8 +15,7 @@ export default class ChaincodeService {
     this.eventHub = null;
   }
 
-  // TODO no hardconding
-  invoke = (user = 'user4') => new Promise((async (resolve, reject) => {
+  prepareRequest = async (user, functionName, funcArgs = [''], invocation = true) => new Promise((async (resolve, reject) => {
     this.fabricClient = network.getFabricClient();
     this.channel = network.getChannel();
 
@@ -25,14 +28,32 @@ export default class ChaincodeService {
     // TODO error handling - wrong fcn name
     const request = {
       // targets: let default to the peer assigned to the client
-      chaincodeId: 'watchmovement-app', // TODO config
-      fcn: 'initLedger',
-      args: [''],
-      chainId: 'mychannel', // TODO CONFIG
-      txId
+      chaincodeId: config.CHAINCODE_NAME,
+      fcn: functionName,
+      args: funcArgs,
     };
 
+    if (invocation) resolve(Object.assign(request, { txId, chainId: config.CHANNEL_NAME }));
+    resolve(request);
+  }));
 
+  query = async request => new Promise((async (resolve, reject) => {
+    const queryResult = await this.channel.queryByChaincode(request)
+      .catch(err => reject(err));
+
+    if (!(queryResult && queryResult.length === config.PEERS.length)) {
+      reject(new APIError('No payloads were returned from query', httpStatus.BAD_REQUEST));
+    }
+
+    if (queryResult[0] instanceof Error) {
+      reject(new APIError('Error from query', httpStatus.BAD_REQUEST));
+    }
+
+    resolve(JSON.parse(queryResult[0].toString()));
+  }));
+
+  // TODO no hardconding
+  invoke = request => new Promise((async (resolve, reject) => {
     const proposalResult = await this.channel.sendTransactionProposal(request)
       .catch(err => reject(err));
 
@@ -45,7 +66,7 @@ export default class ChaincodeService {
       return reject(new Error('Transaction proposal was bad'));
     }
 
-    const result = await this.processProposal(proposal, proposalResponses, txId);
+    const result = await this.processProposal(proposal, proposalResponses, request.txId);
 
     resolve(result);
   }));

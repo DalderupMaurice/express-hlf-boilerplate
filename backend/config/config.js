@@ -18,7 +18,14 @@ const envVarsSchema = Joi.object({
   JWT_SECRET: Joi.string().required().description('JWT Secret required to sign'),
   MONGO_HOST: Joi.string().required().description('Mongo DB host url'),
   MONGO_PORT: Joi.number().default(27017),
-  USE_DB: Joi.boolean().default(false)
+  USE_DB: Joi.boolean().default(false),
+  ORG_MSP: Joi.string().required().description('The name of the Membership Service Provider. Ex: "Org1MSP"'),
+  CHANNEL_NAME: Joi.string().required().description('The name of the Channel. Ex: "mychannel"'),
+  CHAINCODE_NAME: Joi.string().required().description('The name of the chaincode package. Ex: "my-chaincode"'),
+  CA_DOMAIN: Joi.string().required().description('The domain of the Certificate Authorithy. Ex: "ca.example.com"'),
+  EVENTHUB: Joi.string().required().description('The endpoint of any EventHub (Peer address). Ex: "http://localhost:7053"'),
+  PEER1: Joi.string().required().description('The endpoint of any peer (Can be multiple.. PEER2, PEER3,..). Ex: "http://localhost:7050"'),
+  ORDERER1: Joi.string().required().description('The endpoint of any orderer (Can be multiple.. ORDERER2, ORDERER3,..). Ex: "http://localhost:7051"'),
 }).unknown().required();
 
 const _Joi$validate = Joi.validate(process.env, envVarsSchema);
@@ -41,7 +48,8 @@ const config = {
   useDb: envVars.USE_DB,
   ORG_MSP: envVars.ORG_MSP,
   CHANNEL_NAME: envVars.CHANNEL_NAME,
-  CA_NAME: envVars.CA_NAME,
+  CHAINCODE_NAME: envVars.CHAINCODE_NAME,
+  CA_DOMAIN: envVars.CA_DOMAIN,
   CA_URL: envVars.CA_URL,
   PEERS: [
     envVars.PEER1
