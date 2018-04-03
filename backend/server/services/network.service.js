@@ -24,10 +24,12 @@ const {
   EVENTHUB
 } = config;
 
+
 // TODO - deleting the keys without network restart register() fails => user already registered
 // TODO - question: WHAT is the secret after registration and you want to retrieve your user
 const register = async (user, org, secret = null) => {
   // Check is user is already enrolled or not
+  // TODO - DO NOT RETURN WHEN ALREADY REGISTERED!!!
   const userFromStore = await fabricClient.getUserContext(user, true);
 
 
