@@ -1,6 +1,10 @@
 import Promise from 'bluebird';
 import mongoose from 'mongoose';
 import httpStatus from 'http-status';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import config from '../../../config/config';
+
 import APIError from '../../utils/APIError';
 
 /**
@@ -8,6 +12,11 @@ import APIError from '../../utils/APIError';
  */
 const UserSchema = new mongoose.Schema({
   username: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  organisation: {
     type: String,
     required: true
   },
@@ -17,6 +26,10 @@ const UserSchema = new mongoose.Schema({
   },
   enrollmentSecret: {
     type: String,
+    required: true
+  },
+  enrollment: {
+    type: mongoose.Schema.Types.Mixed,
     required: true
   },
   createdAt: {
@@ -31,11 +44,35 @@ const UserSchema = new mongoose.Schema({
  * - validations
  * - virtuals
  */
+UserSchema.pre('save', async function save(next) {
+  try {
+    if (!this.isModified('password')) return next();
+
+    const hash = await bcrypt.hash(this.password, 10);
+    this.password = hash;
+
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+});
+
 
 /**
  * Methods
  */
-UserSchema.method({});
+UserSchema.method({
+  token() {
+    return jwt.sign({
+      id: this._id,
+      username: this.username
+    }, config.jwtSecret);
+  },
+
+  async passwordMatches(password) {
+    return bcrypt.compare(password, this.password);
+  }
+});
 
 /**
  * Statics
@@ -54,6 +91,29 @@ UserSchema.statics = {
       const err = new APIError('No such user exists!', httpStatus.NOT_FOUND);
       return Promise.reject(err);
     });
+  },
+
+  getByUsername: function getByUsername(username) {
+    return this.findOne({ username }).exec().then(user => {
+      if (user) {
+        const err = new APIError('User already exists!', httpStatus.BAD_REQUEST);
+        return Promise.reject(err);
+      }
+      return Promise.resolve();
+    });
+  },
+
+  async findAndGenerateToken(options) {
+    const { username, password } = options;
+    if (!username) throw new APIError('An username is required to generate a token');
+
+    const user = await this.findOne({ username }).exec();
+    if (password) {
+      if (user && await user.passwordMatches(password)) {
+        return { ...user._doc, accessToken: user.token() };
+      }
+    }
+    throw new APIError('Incorrect username or password', httpStatus.UNAUTHORIZED, true);
   },
 
 

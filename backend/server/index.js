@@ -43,11 +43,6 @@ if (!module.parent) {
   network.initFabric()
     .then(res => {
       Logger().info(`${res.toString()}\n\n`);
-      if (res) return network.register('user4', 'org1.department1');
-    })
-    .then(res => {
-      Logger().info(`${res.toString()}\n\n`);
-      // listen on port config.port
       app.listen(config.port, () => {
         Logger().info(`server started on port ${config.port} (${config.env})`);
       });

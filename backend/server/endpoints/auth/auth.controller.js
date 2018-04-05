@@ -1,13 +1,25 @@
-import jwt from 'jsonwebtoken';
 import httpStatus from 'http-status';
 
 import APIError from '../../utils/APIError';
-import config from '../../../config/config';
+import network from '../../services/network.service';
+import User from '../user/user.model';
 
-// sample user, used for authentication
-const user = {
-  username: 'react',
-  password: 'express'
+
+const register = (req, res, next) => {
+  const user = new User({
+    username: req.body.username,
+    organisation: req.body.organisation,
+    password: req.body.password
+  });
+
+  // Persist if user exists
+  User.getByUsername(req.body.username)
+    .then(async () => {
+      const updatedUser = await network.register(user);
+      updatedUser.save();
+    })
+    .then(savedUser => res.json(savedUser))
+    .catch(e => next(e));
 };
 
 /**
@@ -17,17 +29,12 @@ const user = {
  * @param next
  * @returns {*}
  */
-const login = (req, res, next) => {
-  // Ideally you'll fetch this from the db
-  // Idea here was to show how jwt works with simplicity
-  if (req.body.username === user.username && req.body.password === user.password) {
-    const token = jwt.sign({
-      username: user.username
-    }, config.jwtSecret);
-    return res.json({
-      token,
-      username: user.username
-    });
+const login = async (req, res, next) => {
+  const userWithToken = await User.findAndGenerateToken(req.body).catch(e => next(e));
+
+  if (userWithToken) {
+    const test = await network.login(userWithToken).catch(e => next(e));
+    return res.json(userWithToken + test);
   }
 
   const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
@@ -47,4 +54,4 @@ const getRandomNumber = (req, res) =>
     num: Math.random() * 100
   });
 
-export default { login, getRandomNumber };
+export default { login, register, getRandomNumber };

@@ -40,7 +40,7 @@ const create = (req, res, next) => {
 const update = (req, res, next) => {
   const { user } = req;
   user.username = req.body.username;
-  user.mobileNumber = req.body.mobileNumber;
+  user.password = req.body.password;
 
   user.save().then(savedUser => res.json(savedUser)).catch(e => next(e));
 };

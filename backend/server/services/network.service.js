@@ -12,7 +12,6 @@ let fabricCaClient = null;
 let channel = null;
 let eventHub = null;
 let adminUser = null;
-let memberUser = null;
 
 const {
   CHANNEL_NAME,
@@ -20,17 +19,24 @@ const {
   ORDERERS,
   CA_DOMAIN,
   CA_URL,
-  ORG_MSP,
   EVENTHUB
 } = config;
 
 
+const login = async user => {
+  // Enroll the user
+  const enrollment = await fabricClient.setUserContext(user).catch(err => Promise.reject(err));
+  // return enrollment;
+  return enrollment;
+};
+
+
 // TODO - deleting the keys without network restart register() fails => user already registered
 // TODO - question: WHAT is the secret after registration and you want to retrieve your user
-const register = async (user, org, secret = null) => {
+const register = async (user, secret = null) => {
   // Check is user is already enrolled or not
   // TODO - DO NOT RETURN WHEN ALREADY REGISTERED!!!
-  const userFromStore = await fabricClient.getUserContext(user, true);
+  const userFromStore = await fabricClient.getUserContext(user.username, true);
 
 
   // If user is already enrolled, return
@@ -42,39 +48,47 @@ const register = async (user, org, secret = null) => {
 
   // If secret is given, use that. Else register and create secret
   if (!secret) {
+    // TODO error here means the affiliation (organisation) does not exist
+    // TODO affiliation vs organisation
     // eslint-disable-next-line no-param-reassign
     secret = await fabricCaClient.register({
-      enrollmentID: user,
-      affiliation: org
+      enrollmentID: user.username,
+      affiliation: user.organisation
     }, adminUser).catch(err => Promise.reject(new Error(`${err}. Please sign in`)));
   }
 
 
   // Enroll the user
   const enrollment = await fabricCaClient.enroll({
-    enrollmentID: user,
+    enrollmentID: user.username,
     enrollmentSecret: secret
   }).catch(err => Promise.reject(err));
 
 
+  // TODO createUser needed??
   // Create the user
-  memberUser = await fabricClient.createUser({
-    username: user,
-    mspid: ORG_MSP,
-    cryptoContent: {
-      privateKeyPEM: enrollment.key.toBytes(),
-      signedCertPEM: enrollment.certificate
-    }
+  // memberUser = await fabricClient.createUser({
+  //   username: user,
+  //   mspid: ORG_MSP,
+  //   cryptoContent: {
+  //     privateKeyPEM: enrollment.key.toBytes(),
+  //     signedCertPEM: enrollment.certificate
+  //   }
+  // });
+  //
+  //
+  // Set user context to the new user
+  // const userInStorage = await fabricClient.setUserContext(memberUser, true);
+  // memberUser = userInStorage;
+
+  // TODO - enrollment.key and enrollment.rootCertificate needed??
+  const updatedUser = Object.assign(user, {
+    enrollmentSecret: secret,
+    enrollment: enrollment.certificate,
   });
 
-
-  // Set user context to the new user
-  const userInStorage = await fabricClient.setUserContext(memberUser, true);
-  memberUser = userInStorage;
-
-
   // Return statement
-  return Promise.resolve(userInStorage);
+  return Promise.resolve(updatedUser);
 };
 
 
@@ -157,5 +171,6 @@ export default {
   getChannel,
   getEventHub,
   initFabric,
-  register
+  register,
+  login
 };
