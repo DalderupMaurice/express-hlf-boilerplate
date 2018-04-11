@@ -57,16 +57,24 @@ const queryByArgs = async (req, res, next) => {
 };
 
 const add = async (req, res, next) => {
+  console.log(`===================`);
+
+  console.log(req.body);
+  console.log(`===================`);
+
   // Important - order matters!!
   // TODO remove toString() after param validation
+  // Transporter: args[1], Location: args[2], Timestamp: args[3], Holder: args[4]
   const movement = {
     Key: uuid(),
-    Timestamp: moment().unix().toString(),
-    Location: req.body.location,
     Transporter: req.body.transporter,
+    Location: req.body.location,
+  
+    Timestamp: moment().unix().toString(),
     Holder: req.body.holder
   };
 
+  
   try {
     const request = await chaincodeService.prepareRequest('user4', 'recordWatchMovement', Object.values(movement));
     const initResult = await chaincodeService.invoke(request);
