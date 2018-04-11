@@ -68,7 +68,7 @@ const add = async (req, res, next) => {
     Holder: req.body.holder
   };
 
-  
+
   try {
     const request = await chaincodeService.prepareRequest('user4', 'recordWatchMovement', Object.values(movement));
     const initResult = await chaincodeService.invoke(request);
