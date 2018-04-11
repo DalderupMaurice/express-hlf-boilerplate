@@ -57,11 +57,6 @@ const queryByArgs = async (req, res, next) => {
 };
 
 const add = async (req, res, next) => {
-  console.log(`===================`);
-
-  console.log(req.body);
-  console.log(`===================`);
-
   // Important - order matters!!
   // TODO remove toString() after param validation
   // Transporter: args[1], Location: args[2], Timestamp: args[3], Holder: args[4]
@@ -69,7 +64,6 @@ const add = async (req, res, next) => {
     Key: uuid(),
     Transporter: req.body.transporter,
     Location: req.body.location,
-  
     Timestamp: moment().unix().toString(),
     Holder: req.body.holder
   };
