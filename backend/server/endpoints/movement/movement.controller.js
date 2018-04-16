@@ -45,7 +45,7 @@ const queryAll = async (req, res, next) => {
     const initResult = await chaincodeService.query(request);
     res.json(initResult);
   } catch (e) {
-    next(new APIError(e.data, httpStatus.BAD_REQUEST, true));
+    next(e);
   }
 };
 
@@ -56,7 +56,7 @@ const queryByArgs = async (req, res, next) => {
     const initResult = await chaincodeService.query(request);
     res.json(initResult);
   } catch (e) {
-    next(new APIError(e.data, httpStatus.BAD_REQUEST, true));
+    next(e);
   }
 };
 
@@ -67,7 +67,7 @@ const add = async (req, res, next) => {
     const initResult = await chaincodeService.invoke(request);
     res.json(initResult);
   } catch (e) {
-    next(new APIError(e.data, httpStatus.BAD_REQUEST, true));
+    next(e);
   }
 };
 
@@ -78,7 +78,7 @@ const transfer = async (req, res, next) => {
     const initResult = await chaincodeService.invoke(request);
     res.json(initResult);
   } catch (e) {
-    next(new APIError(e.message, httpStatus.BAD_REQUEST, true));
+    next(e);
   }
 };
 
