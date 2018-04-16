@@ -63,8 +63,6 @@ const queryByArgs = async (req, res, next) => {
 const add = async (req, res, next) => {
   try {
     const validatedRequest = await validate(req, addSchema);
-    console.log('-----------------------------------------------------------------------------');
-    console.log(validatedRequest);
     const request = await chaincodeService.prepareRequest('user4', ADD_MOVEMENT, addRequestToArgs(validatedRequest));
     const initResult = await chaincodeService.invoke(request);
     res.json(initResult);

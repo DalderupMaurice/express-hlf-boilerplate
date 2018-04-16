@@ -3,7 +3,6 @@ import { badRequest } from 'boom';
 import Joi from 'joi';
 
 const validate = (req, rules = {}) => {
-  console.log('Smash gewoon op de keyboard jongeuh');
   const toSchema = rule => {
     // If a Joi rule is provided, use it.
     if (rule && rule.isJoi) {
@@ -59,6 +58,6 @@ const validate = (req, rules = {}) => {
   }
   // Otherwise, we're done.
   return Promise.resolve(req);
-}
+};
 
-export default validate
+export default validate;
