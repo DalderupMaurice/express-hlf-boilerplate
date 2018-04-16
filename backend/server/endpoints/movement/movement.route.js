@@ -16,7 +16,7 @@ router.route('/query/all')
 
 
 // TODO param validation
-router.route('/query/:id')
+router.route('/query/:key')
 /** GET /api/chain/query/:id - Queries the ledger by Id */
   .get(movementCtrl.queryByArgs);
 
