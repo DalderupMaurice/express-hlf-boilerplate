@@ -23,8 +23,8 @@ const CHANGE_MOVEMENT_HOLDER = 'changeWatchMovementHolder';
  */
 const init = async (req, res, next) => {
   try {
-    const request = await chaincodeService.prepareRequest('user4', INIT_LEDGER, ['']);
-    const initResult = await chaincodeService.invoke(request);
+    const chaincodeRequest = await chaincodeService.prepareRequest('user4', INIT_LEDGER, ['']);
+    const initResult = await chaincodeService.invoke(chaincodeRequest);
     res.json(initResult);
   } catch (e) {
     const err = new APIError(e.message, httpStatus.BAD_REQUEST, true);
@@ -41,8 +41,8 @@ const init = async (req, res, next) => {
  */
 const queryAll = async (req, res, next) => {
   try {
-    const request = await chaincodeService.prepareRequest('user4', QUERY_ALL_MOVEMENT, [''], false);
-    const initResult = await chaincodeService.query(request);
+    const chaincodeRequest = await chaincodeService.prepareRequest('user4', QUERY_ALL_MOVEMENT, [''], false);
+    const initResult = await chaincodeService.query(chaincodeRequest);
     res.json(initResult);
   } catch (e) {
     next(e);
@@ -51,9 +51,10 @@ const queryAll = async (req, res, next) => {
 
 const queryByArgs = async (req, res, next) => {
   try {
-    const validatedRequest = await validate(req, getOneSchema);
-    const request = await chaincodeService.prepareRequest('user4', QUERY_ONE_MOVEMENT, getOneRequestToArgs(validatedRequest), false);
-    const initResult = await chaincodeService.query(request);
+    const validatedAPIRequest = await validate(req, getOneSchema);
+    const args = getOneRequestToArgs(validatedAPIRequest);
+    const chaincodeRequest = await chaincodeService.prepareRequest('user4', QUERY_ONE_MOVEMENT, args, false);
+    const initResult = await chaincodeService.query(chaincodeRequest);
     res.json(initResult);
   } catch (e) {
     next(e);
@@ -62,9 +63,10 @@ const queryByArgs = async (req, res, next) => {
 
 const add = async (req, res, next) => {
   try {
-    const validatedRequest = await validate(req, addSchema);
-    const request = await chaincodeService.prepareRequest('user4', ADD_MOVEMENT, addRequestToArgs(validatedRequest));
-    const initResult = await chaincodeService.invoke(request);
+    const validatedAPIRequest = await validate(req, addSchema);
+    const args = addRequestToArgs(validatedAPIRequest);
+    const chaincodeRequest = await chaincodeService.prepareRequest('user4', ADD_MOVEMENT, args);
+    const initResult = await chaincodeService.invoke(chaincodeRequest);
     res.json(initResult);
   } catch (e) {
     next(e);
@@ -73,9 +75,10 @@ const add = async (req, res, next) => {
 
 const transfer = async (req, res, next) => {
   try {
-    const validatedRequest = await validate(req, updateSchema);
-    const request = await chaincodeService.prepareRequest('user4', CHANGE_MOVEMENT_HOLDER, updateRequestToArgs(validatedRequest));
-    const initResult = await chaincodeService.invoke(request);
+    const validatedAPIRequest = await validate(req, updateSchema);
+    const args = updateRequestToArgs(validatedAPIRequest);
+    const chaincodeRequest = await chaincodeService.prepareRequest('user4', CHANGE_MOVEMENT_HOLDER, args);
+    const initResult = await chaincodeService.invoke(chaincodeRequest);
     res.json(initResult);
   } catch (e) {
     next(e);
