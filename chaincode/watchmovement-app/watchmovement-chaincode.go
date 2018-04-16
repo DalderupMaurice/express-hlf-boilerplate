@@ -1,10 +1,10 @@
 package main
 
-/* Imports  
-* 4 utility libraries for handling bytes, reading and writing JSON, 
-formatting, and string manipulation  
-* 2 specific Hyperledger Fabric specific libraries for Smart Contracts  
-*/ 
+/* Imports
+* 4 utility libraries for handling bytes, reading and writing JSON,
+formatting, and string manipulation
+* 2 specific Hyperledger Fabric specific libraries for Smart Contracts
+*/
 import (
 	"bytes"
 	"encoding/json"
@@ -15,22 +15,22 @@ import (
 	sc "github.com/hyperledger/fabric/protos/peer"
 )
 
-/* Define Watch Movement structure, with 4 properties.  
+/* Define Watch Movement structure, with 4 properties.
 Structure tags are used by encoding/json library
 */
 type WatchMovement struct {
 	Transporter string `json:"transporter"`
-	Timestamp string `json:"timestamp"`
-	Location  string `json:"location"`
-	Holder  string `json:"holder"`
+	Timestamp   string `json:"timestamp"`
+	Location    string `json:"location"`
+	Holder      string `json:"holder"`
 }
 
 /*
  * The Init method *
  called when the Smart Contract "watchmovement-chaincode" is instantiated by the network
- * Best practice is to have any Ledger initialization in separate function 
+ * Best practice is to have any Ledger initialization in separate function
  -- see initLedger()
- */
+*/
 func (s *WatchMovement) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
 	return shim.Success(nil)
 }
@@ -39,7 +39,7 @@ func (s *WatchMovement) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
  * The Invoke method *
  called when an application requests to run the Smart Contract "watchmovement-chaincode"
  The app also specifies the specific smart contract function to call with args
- */
+*/
 func (s *WatchMovement) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response {
 
 	// Retrieve the requested Smart Contract function and arguments
@@ -64,7 +64,7 @@ func (s *WatchMovement) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
  * The queryWatchMovement method *
 Used to view the records of one particular watch movement
 It takes one argument -- the key for the watch movement in question
- */
+*/
 func (s *WatchMovement) queryWatchMovement(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	if len(args) != 1 {
@@ -81,7 +81,7 @@ func (s *WatchMovement) queryWatchMovement(APIstub shim.ChaincodeStubInterface, 
 /*
  * The initLedger method *
 Will add test data (10 watch movements)to our network
- */
+*/
 func (s *WatchMovement) initLedger(APIstub shim.ChaincodeStubInterface) sc.Response {
 	watchmovement := []WatchMovement{
 		WatchMovement{Transporter: "ERC2", Location: "67.0006, -70.5476", Timestamp: "1504054225", Holder: "Victor"},
@@ -110,16 +110,16 @@ func (s *WatchMovement) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 
 /*
  * The recordWatchMovement method *
-Watch Movement producers like Alex would use to record each of his watch movements. 
-This method takes in five arguments (attributes to be saved in the ledger). 
- */
+Watch Movement producers like Alex would use to record each of his watch movements.
+This method takes in five arguments (attributes to be saved in the ledger).
+*/
 func (s *WatchMovement) recordWatchMovement(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	if len(args) != 5 {
 		return shim.Error("Incorrect number of arguments. Expecting 5")
 	}
 
-	var watchmovement = WatchMovement{ Transporter: args[1], Location: args[2], Timestamp: args[3], Holder: args[4] }
+	var watchmovement = WatchMovement{Transporter: args[1], Location: args[2], Timestamp: args[3], Holder: args[4]}
 
 	watchmovementAsBytes, _ := json.Marshal(watchmovement)
 	err := APIstub.PutState(args[0], watchmovementAsBytes)
@@ -133,8 +133,8 @@ func (s *WatchMovement) recordWatchMovement(APIstub shim.ChaincodeStubInterface,
 /*
  * The queryAllWatchMovement method *
 allows for assessing all the records added to the ledger(all watch movements)
-This method does not take any arguments. Returns JSON string containing results. 
- */
+This method does not take any arguments. Returns JSON string containing results.
+*/
 func (s *WatchMovement) queryAllWatchMovement(APIstub shim.ChaincodeStubInterface) sc.Response {
 
 	startKey := "0"
@@ -180,9 +180,9 @@ func (s *WatchMovement) queryAllWatchMovement(APIstub shim.ChaincodeStubInterfac
 
 /*
  * The changeWatchMovementHolder method *
-The data in the world state can be updated with who has possession. 
-This function takes in 2 arguments, watchmovement id and new holder name. 
- */
+The data in the world state can be updated with who has possession.
+This function takes in 2 arguments, watchmovement id and new holder name.
+*/
 func (s *WatchMovement) changeWatchMovementHolder(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	if len(args) != 2 {
@@ -212,9 +212,9 @@ func (s *WatchMovement) changeWatchMovementHolder(APIstub shim.ChaincodeStubInte
 
 /*
  * main function *
-calls the Start function 
+calls the Start function
 The main function starts the chaincode in the container during instantiation.
- */
+*/
 func main() {
 
 	// Create a new Smart Contract

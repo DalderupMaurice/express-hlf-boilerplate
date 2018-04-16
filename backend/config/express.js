@@ -87,7 +87,7 @@ if (config.env !== 'test') {
 app.use((err, req, res, next) => (
   res.status(err.status).json({
     message: err.isPublic ? err.message : httpStatus[err.status],
-    stack: config.env === 'development' ? err.stack : {}
+    stack: config.env === 'development' && err.status === httpStatus.INTERNAL_SERVER_ERROR ? err.stack : {}
   })
 ));
 

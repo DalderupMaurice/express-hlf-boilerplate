@@ -22,7 +22,7 @@ export default class ChaincodeService {
 
     const userContext = await this.fabricClient.getUserContext(user, true)
       .catch(err => reject(err));
-    if (!validateUser(userContext)) return reject(new Error('User not yet enrolled.'));
+    if (!validateUser(userContext)) return reject(new APIError('User not yet enrolled.', httpStatus.NOT_FOUND, true));
 
     const txId = this.fabricClient.newTransactionID();
 
@@ -47,7 +47,7 @@ export default class ChaincodeService {
     }
 
     if (queryResult[0] instanceof Error) {
-      return reject(new APIError(`Error from query: ${queryResult[0].message} `, httpStatus.BAD_REQUEST));
+      return reject(new APIError(`Error from query: ${queryResult[0].message} `, httpStatus.NOT_FOUND));
     }
 
     try {

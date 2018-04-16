@@ -1,6 +1,7 @@
-import { badRequest } from 'boom';
+import httpStatus from 'http-status';
 
 import Joi from 'joi';
+import APIError from '../utils/APIError';
 
 const validate = (req, rules = {}) => {
   const toSchema = rule => {
@@ -54,7 +55,7 @@ const validate = (req, rules = {}) => {
   }
   // If there was an error, return a rejecting promise with the 400 request body
   if (Object.keys(errorData).length > 0) {
-    return Promise.reject(badRequest('Request validation failed', { type: 'VALIDATION_FAILED', details: errorData }));
+    return Promise.reject(new APIError(errorData, httpStatus.BAD_REQUEST));
   }
   // Otherwise, we're done.
   return Promise.resolve(req);
