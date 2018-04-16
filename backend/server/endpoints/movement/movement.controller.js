@@ -79,8 +79,7 @@ const transfer = async (req, res, next) => {
     const initResult = await chaincodeService.invoke(request);
     res.json(initResult);
   } catch (e) {
-    const err = new APIError(e.message, httpStatus.BAD_REQUEST, true);
-    next(err);
+    next(new APIError(e.message, httpStatus.BAD_REQUEST, true));
   }
 };
 
