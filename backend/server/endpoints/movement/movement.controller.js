@@ -1,9 +1,8 @@
 import httpStatus from 'http-status';
-
 import ChaincodeService from '../../services/chain.service';
 import APIError from '../../utils/APIError';
 
-import { validate } from '../../services/validate.service';
+import validate from '../../services/validate.service';
 
 import { getOneSchema, addSchema, updateSchema } from './movement.validate';
 import { addRequestToArgs, getOneRequestToArgs, updateRequestToArgs } from './movement.model';
@@ -64,6 +63,8 @@ const queryByArgs = async (req, res, next) => {
 const add = async (req, res, next) => {
   try {
     const validatedRequest = await validate(req, addSchema);
+    console.log('-----------------------------------------------------------------------------');
+    console.log(validatedRequest);
     const request = await chaincodeService.prepareRequest('user4', ADD_MOVEMENT, addRequestToArgs(validatedRequest));
     const initResult = await chaincodeService.invoke(request);
     res.json(initResult);
