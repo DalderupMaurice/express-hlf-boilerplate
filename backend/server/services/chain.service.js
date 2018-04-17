@@ -16,7 +16,7 @@ export default class ChaincodeService {
   }
 
 
-  prepareRequest = async (user, functionName, funcArgs = [''], invocation = true) => new Promise((async (resolve, reject) => {
+  prepareRequest = (user, functionName, funcArgs = [''], invocation = true) => new Promise((async (resolve, reject) => {
     this.fabricClient = network.getFabricClient();
     this.channel = network.getChannel();
 

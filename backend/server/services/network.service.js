@@ -1,17 +1,19 @@
 import path from 'path';
 import os from 'os';
-import Fabric_Client from 'fabric-client'; // eslint-disable-line
+import Fabric_Client, { api } from 'fabric-client'; // eslint-disable-line
 import Fabric_CA_Client from 'fabric-ca-client'; // eslint-disable-line
 
 import Logger from '../../config/Log';
 import * as labels from '../../config/labels';
 import config from '../../config/config';
+import APIError from '../utils/APIError';
 
 const fabricClient = new Fabric_Client();
 let fabricCaClient = null;
 let channel = null;
 let eventHub = null;
 let adminUser = null;
+let memberUser = null;
 
 const {
   CHANNEL_NAME,
@@ -19,14 +21,25 @@ const {
   ORDERERS,
   CA_DOMAIN,
   CA_URL,
+  ORG_MSP,
   EVENTHUB
 } = config;
 
 
 const login = async user => {
+  // Check if user exists in persistent storage
+  const userFromStore = await fabricClient.getUserContext(user.username, true)
+    .catch(err => Promise.reject(err));
+
+  if (!userFromStore) return Promise.reject(new APIError('User not yet registered.'));
+
+
   // Enroll the user
-  const enrollment = await fabricClient.setUserContext(user).catch(err => Promise.reject(err));
-  // return enrollment;
+  const enrollment = await fabricCaClient.enroll({
+    enrollmentID: user.username,
+    enrollmentSecret: user.password
+  }).catch(err => Promise.reject(err));
+
   return enrollment;
 };
 
@@ -38,13 +51,11 @@ const register = async (user, secret = null) => {
   // TODO - DO NOT RETURN WHEN ALREADY REGISTERED!!!
   const userFromStore = await fabricClient.getUserContext(user.username, true);
 
-
   // If user is already enrolled, return
   if (userFromStore && userFromStore.isEnrolled()) {
     Logger(labels.NETWORK).info(`Returning from storage, ${userFromStore._name} is already enrolled.`);
     return Promise.resolve(userFromStore);
   }
-
 
   // If secret is given, use that. Else register and create secret
   if (!secret) {
@@ -65,30 +76,28 @@ const register = async (user, secret = null) => {
   }).catch(err => Promise.reject(err));
 
 
-  // TODO createUser needed??
   // Create the user
-  // memberUser = await fabricClient.createUser({
-  //   username: user,
-  //   mspid: ORG_MSP,
-  //   cryptoContent: {
-  //     privateKeyPEM: enrollment.key.toBytes(),
-  //     signedCertPEM: enrollment.certificate
-  //   }
-  // });
-  //
-  //
+  memberUser = await fabricClient.createUser({
+    username: user.username,
+    mspid: ORG_MSP,
+    cryptoContent: {
+      privateKeyPEM: enrollment.key.toBytes(),
+      signedCertPEM: enrollment.certificate
+    }
+  });
+
   // Set user context to the new user
-  // const userInStorage = await fabricClient.setUserContext(memberUser, true);
-  // memberUser = userInStorage;
+  const userInStorage = await fabricClient.setUserContext(memberUser, true);
+  memberUser = userInStorage;
 
   // TODO - enrollment.key and enrollment.rootCertificate needed??
   const updatedUser = Object.assign(user, {
     enrollmentSecret: secret,
-    enrollment: enrollment.certificate,
+    enrollment,
   });
 
   // Return statement
-  return Promise.resolve(updatedUser);
+  return Promise.resolve(memberUser, updatedUser);
 };
 
 
@@ -154,7 +163,7 @@ const initFabric = async () => {
     adminUser = userFromStore;
   } else {
     // TODO no hardcoding
-    adminUser = await register('admin', 'org1.department1', 'adminpw'); // eslint-disable-line
+    adminUser = await register({ username:'admin', organisation:'org1.department1'}, 'adminpw'); // eslint-disable-line
   }
 
   // Return statement

@@ -8,7 +8,10 @@ import network from './services/network.service';
 
 import app from '../config/express';
 import Logger from '../config/Log';
+import User from './endpoints/user/user.model';
+import ChaincodeService from './services/chain.service';
 
+const chaincodeService = new ChaincodeService();
 
 // make bluebird default Promise
 Promise = require('bluebird'); // eslint-disable-line no-global-assign
@@ -43,6 +46,22 @@ if (!module.parent) {
   network.initFabric()
     .then(res => {
       Logger().info(`${res.toString()}\n\n`);
+
+      const user = new User({
+        username: 'MA',
+        organisation: 'org1.department1',
+        password: 'myPass'
+      });
+
+      return network.register(user);
+    })
+    .then(res => {
+      Logger().info(`${res.toString()}\n\n`);
+
+      return chaincodeService.prepareRequest('MA', 'initLedger', [''], true);
+    })
+    .then(request => chaincodeService.invoke(request))
+    .then(() => {
       app.listen(config.port, () => {
         Logger().info(`server started on port ${config.port} (${config.env})`);
       });
