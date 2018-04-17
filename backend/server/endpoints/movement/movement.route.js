@@ -1,55 +1,27 @@
 import { Router } from 'express';
 
-import movementCtrl from './movement.controller';
+import { init, queryAll, queryByArgs, add, transfer } from './movement.controller';
 
-const router = Router(); // eslint-disable-line new-cap
+const router = Router();
 
-router.route('/init')
-  /** GET /api/chain/init - Initialize the chaincode/ledger */
-  .get(movementCtrl.init);
+router
+  .route('/init')
+  .get(init);
 
-router.route('/query/all')
-/** GET /api/chain/query/all - Queries the complete ledger */
-  .get(movementCtrl.queryAll);
+router
+  .route('/query/all')
+  .get(queryAll);
 
-router.route('/query/:key')
-/** GET /api/chain/query/:id - Queries the ledger by Id */
-  .get(movementCtrl.queryByArgs);
+router
+  .route('/query/:key')
+  .get(queryByArgs);
 
-router.route('/add')
-  /** POST /api/chain/add - Adds an object to the ledger */
-  .post(movementCtrl.add);
+router
+  .route('/add')
+  .post(add);
 
-router.route('/update')
-  /** PUT /api/chain/update - Updates an object from the ledger */
-  .put(movementCtrl.transfer);
-
+router
+  .route('/update')
+  .put(transfer);
 
 export default router;
-
-/*
-
-  app.get('/add_watchmovement/:watchmovement', function(req, res){
-    watchmovement.add_watchmovement(req, res);
-  });
-  app.get('/get_all_watchmovement', function(req, res){
-    watchmovement.get_all_watchmovement(req, res);
-  });
-  app.get('/change_holder/:holder', function(req, res){
-    watchmovement.change_holder(req, res);
-  });
- */
-
-/*
-get
-initLedger
-
-queryAllWatchMovement
-queryWatchMovement
-
-post
-recordWatchMovement
-
-update
-changeWatchMovementHolder
- */

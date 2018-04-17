@@ -15,15 +15,13 @@ import moment from 'moment';
  * @param Request A validated ADD request containing all needed values
  * @returns {Object}
  */
-export function addRequestToArgs(req) {
-  return Object.values({
-    Key: uuid(),
-    Transporter: req.body.transporter,
-    Location: req.body.location,
-    Timestamp: moment().unix().toString(),
-    Holder: req.body.holder
-  });
-}
+const addRequestToArgs = req => Object.values({
+  Key: uuid(),
+  Transporter: req.body.transporter,
+  Location: req.body.location,
+  Timestamp: moment().unix().toString(),
+  Holder: req.body.holder
+});
 
 /**
  * Create a key object from an incoming GET ONE request
@@ -31,11 +29,9 @@ export function addRequestToArgs(req) {
  * @param Request A validated GET ONE request
  * @returns {Object}
  */
-export function getOneRequestToArgs(req) {
-  return Object.values({
-    Key: req.params.key,
-  });
-}
+const getOneRequestToArgs = req => Object.values({
+  Key: req.params.key,
+});
 
 /**
  * Create an update object from an incoming UPDATE request
@@ -43,9 +39,13 @@ export function getOneRequestToArgs(req) {
  * @param Request A validated UPDATE request
  * @returns {Object}
  */
-export function updateRequestToArgs(req) {
-  return Object.values({
-    Key: req.body.key.toString(),
-    Holder: req.body.holder
-  });
-}
+const updateRequestToArgs = req => Object.values({
+  Key: req.body.key.toString(),
+  Holder: req.body.holder
+});
+
+export {
+  addRequestToArgs,
+  getOneRequestToArgs,
+  updateRequestToArgs
+};
