@@ -1,19 +1,15 @@
-import httpStatus from 'http-status';
 import ChaincodeService from '../../services/chain.service';
-import APIError from '../../utils/APIError';
-
 import validate from '../../services/validate.service';
-
 import { getOneSchema, addSchema, updateSchema } from './movement.validate';
 import { addRequestToArgs, getOneRequestToArgs, updateRequestToArgs } from './movement.model';
-
-const chaincodeService = new ChaincodeService();
 
 const INIT_LEDGER = 'initLedger';
 const ADD_MOVEMENT = 'recordWatchMovement';
 const QUERY_ONE_MOVEMENT = 'queryWatchMovement';
 const QUERY_ALL_MOVEMENT = 'queryAllWatchMovement';
 const CHANGE_MOVEMENT_HOLDER = 'changeWatchMovementHolder';
+
+const chaincodeService = new ChaincodeService();
 
 // TODO don't hardcode users + functions
 
@@ -27,8 +23,7 @@ const init = async (req, res, next) => {
     const initResult = await chaincodeService.invoke(chaincodeRequest);
     res.json(initResult);
   } catch (e) {
-    const err = new APIError(e.message, httpStatus.BAD_REQUEST, true);
-    next(err);
+    next(e);
   }
 };
 
@@ -85,7 +80,7 @@ const transfer = async (req, res, next) => {
   }
 };
 
-export default {
+export {
   init,
   queryAll,
   queryByArgs,

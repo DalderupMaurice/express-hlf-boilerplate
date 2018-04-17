@@ -5,13 +5,13 @@ const transporter = Joi.string();
 const location = Joi.string();
 const holder = Joi.string();
 
-export const getOneSchema = {
+const getOneSchema = {
   params: {
     key
   }
 };
 
-export const addSchema = {
+const addSchema = {
   body: {
     transporter,
     location,
@@ -19,9 +19,15 @@ export const addSchema = {
   }
 };
 
-export const updateSchema = {
+const updateSchema = {
   body: {
     key,
     holder
   }
+};
+
+export {
+  getOneSchema,
+  addSchema,
+  updateSchema
 };
