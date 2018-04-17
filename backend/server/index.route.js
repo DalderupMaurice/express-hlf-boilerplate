@@ -5,21 +5,10 @@ import authRoutes from './endpoints/auth/auth.route';
 import chainRoutes from './endpoints/chain/chain.route';
 import movementRoutes from './endpoints/movement/movement.route';
 
-const router = Router(); // eslint-disable-line new-cap
+export default Router()
+  .get('/', (req, res) => res.send('OK')) /** GET /health-check - Check service health */
+  .use('/api/users', userRoutes) // mount user routes at /users
+  .use('/api/auth', authRoutes) // mount auth routes at /auth
+  .use('/api/chain', chainRoutes) // mount chaincode routes at /chain
+  .use('/api/movement', movementRoutes); // mount movement routes at /movement
 
-/** GET /health-check - Check service health */
-router.get('/', (req, res) => res.send('OK'));
-
-// mount user routes at /users
-router.use('/api/users', userRoutes);
-
-// mount auth routes at /auth
-router.use('/api/auth', authRoutes);
-
-// mount chaincode routes at /chain
-router.use('/api/chain', chainRoutes);
-
-// mount movement routes at /movement
-router.use('/api/movement', movementRoutes);
-
-export default router;
