@@ -1,5 +1,5 @@
 # Use latest node version 8.x
-FROM node:8.10.0@sha256:a95cbb8c0d34bb8c19cff50ec515672d95106299f8f2fc8ccde2079e3ba55702
+FROM node:8.11.1@sha256:26e4c77f9f797c3993780943239fa79419f011dd93ae4e0097089e2145aeaa24
 
 MAINTAINER Kunal Kapadia <kunalkapadia12@gmail.com>
 
