@@ -2381,9 +2381,9 @@ express-jwt@^5.3.1:
     jsonwebtoken "^8.1.0"
     lodash.set "^4.0.0"
 
-express-queue@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/express-queue/-/express-queue-0.0.11.tgz#8f3ea720d9e639ed411aff66621125fcc5c91ffe"
+express-queue@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/express-queue/-/express-queue-0.0.12.tgz#d16d90f20bab5a018d1a7ae6bfb74b9c8c80747c"
   dependencies:
     debug "^3.1.0"
     express-end "0.0.8"
