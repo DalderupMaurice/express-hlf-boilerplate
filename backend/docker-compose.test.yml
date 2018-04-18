@@ -37,6 +37,6 @@ services:
       - -c
       - yarn --pure-lockfile && yarn test
   mongo:
-    image: "mongo:3.4.2"
+    image: "mongo:3.4.2@sha256:8fa9ae74c30020bfb193e9abb327e92c3920af70e72a114da4373c4cd868fbd5"
     ports:
       - "27017:27017"
