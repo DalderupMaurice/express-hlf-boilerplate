@@ -33,6 +33,6 @@ services:
     links:
       - mongo
   mongo:
-    image: "mongo:3.4@sha256:cb4bc171143d4ad8eda5032ccb04a55f1cb48b5cb71833b455d5dd5a382b6b2e"
+    image: "mongo:3.7@sha256:17513a301508b304372175a4e5d1ad00aa800383b74d1e89e1e23abc630cf1e7"
     ports:
       - "27017:27017"
