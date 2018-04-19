@@ -12,7 +12,7 @@ import moment from "moment";
  * Timestamp
  * Holder
  *
- * @param Request A validated ADD request containing all needed values
+ * @param {Object} req - Request A validated GET ONE request
  * @returns {Object}
  */
 const addRequestToArgs = req =>
@@ -29,7 +29,7 @@ const addRequestToArgs = req =>
 /**
  * Create a key object from an incoming GET ONE request
  *
- * @param Request A validated GET ONE request
+ * @param {Object} req - Request A validated GET ONE request
  * @returns {Object}
  */
 const getOneRequestToArgs = req =>
@@ -40,7 +40,7 @@ const getOneRequestToArgs = req =>
 /**
  * Create an update object from an incoming UPDATE request
  *
- * @param Request A validated UPDATE request
+ * @param {Object} req - Request A validated GET ONE request
  * @returns {Object}
  */
 const updateRequestToArgs = req =>

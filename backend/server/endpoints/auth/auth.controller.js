@@ -20,10 +20,7 @@ const user = {
 const login = (req, res, next) => {
   // Ideally you'll fetch this from the db
   // Idea here was to show how jwt works with simplicity
-  if (
-    req.body.username === user.username &&
-    req.body.password === user.password
-  ) {
+  if (req.body.username === user.username && req.body.password === user.password) {
     const token = jwt.sign(
       {
         username: user.username
@@ -36,11 +33,7 @@ const login = (req, res, next) => {
     });
   }
 
-  const err = new APIError(
-    "Authentication error",
-    httpStatus.UNAUTHORIZED,
-    true
-  );
+  const err = new APIError("Authentication error", httpStatus.UNAUTHORIZED, true);
   return next(err);
 };
 
@@ -57,4 +50,4 @@ const getRandomNumber = (req, res) =>
     num: Math.random() * 100
   });
 
-export default { login, getRandomNumber };
+export { login, getRandomNumber };

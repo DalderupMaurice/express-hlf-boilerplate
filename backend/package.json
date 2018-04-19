@@ -22,6 +22,7 @@
     "lint": "esw *.js server config --color --fix",
     "lint:watch": "yarn lint -- --watch",
     "precommit": "lint-staged",
+    "prettier": "prettier --print-width=120 --write 'server/**/*.js'",
     "test": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --ui bdd --reporter spec --colors server --recursive",
     "test:watch": "yarn test -- --watch",
     "test:coverage": "cross-env NODE_ENV=test ./node_modules/.bin/istanbul cover _mocha -- --ui bdd --reporter spec --colors server --recursive",
@@ -62,6 +63,7 @@
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-function-bind": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "1.6.1",
     "babel-register": "6.26.0",
     "chai": "4.1.2",
@@ -92,7 +94,7 @@
   "lint-staged": {
     "*.{js,css}": [
       "yarn lint",
-      "prettier --write",
+      "prettier --print-width=120 --write",
       "git add"
     ]
   },

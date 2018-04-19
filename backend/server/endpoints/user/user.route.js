@@ -1,31 +1,22 @@
 import { Router } from "express";
 import validate from "express-validation";
 
-import paramValidation from "../../../config/param-validation";
-import userCtrl from "./user.controller";
+import { createSchema, updateSchema } from "./user.validation";
+import { list, create, get, update, remove, load } from "./user.controller";
 
 const router = Router(); // eslint-disable-line new-cap
 
 router
-  .route("/")
-  /** GET /api/users - Get list of users */
-  .get(userCtrl.list)
+  .get("/", list)
+  .get("/:userId", get)
 
-  /** POST /api/users - Create new user */
-  .post(validate(paramValidation.createUser), userCtrl.create);
+  .post("/", validate(createSchema), create)
 
-router
-  .route("/:userId")
-  /** GET /api/users/:userId - Get user */
-  .get(userCtrl.get)
+  .put("/:userId", validate(updateSchema), update)
 
-  /** PUT /api/users/:userId - Update user */
-  .put(validate(paramValidation.updateUser), userCtrl.update)
-
-  /** DELETE /api/users/:userId - Delete user */
-  .delete(userCtrl.remove);
+  .delete("/:userId", remove);
 
 /** Load user when API with userId route parameter is hit */
-router.param("userId", userCtrl.load);
+router.param("userId", load);
 
 export default router;

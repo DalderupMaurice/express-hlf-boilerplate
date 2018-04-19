@@ -83,11 +83,4 @@ const remove = (req, res, next) => {
     .catch(e => next(e));
 };
 
-export default {
-  load,
-  get,
-  create,
-  update,
-  list,
-  remove
-};
+export { load, get, create, update, list, remove };

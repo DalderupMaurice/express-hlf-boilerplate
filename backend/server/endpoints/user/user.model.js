@@ -60,8 +60,7 @@ UserSchema.statics = {
 
   /**
    * List users in descending order of 'createdAt' timestamp.
-   * @param {number} skip - Number of users to be skipped.
-   * @param {number} limit - Limit number of users to be returned.
+   * @param {any} args - Arguments
    * @returns {Promise<User[]>}
    */
   list: function list(...args) {

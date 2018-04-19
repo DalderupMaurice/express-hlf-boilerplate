@@ -1,12 +1,12 @@
 {
-  presets: [
+  "presets": [
     "env"
   ],
-  plugins: [
+  "plugins": [
     [
       "transform-object-rest-spread",
       {
-        useBuiltIns: true
+        "useBuiltIns": true
       }
     ],
     "transform-function-bind",

@@ -33,29 +33,17 @@ const validate = (req, rules = {}) => {
   // Aggregate error details herein.
   const errorData = {};
   // Validate params
-  const { error: paramError } = Joi.validate(
-    req.params || {},
-    toSchema(rules.params),
-    validationOptions
-  );
+  const { error: paramError } = Joi.validate(req.params || {}, toSchema(rules.params), validationOptions);
   if (paramError) {
     errorData.paramErrors = errorConverter(paramError.details);
   }
   // Validate body
-  const { error: bodyError } = Joi.validate(
-    req.body || {},
-    toSchema(rules.body),
-    validationOptions
-  );
+  const { error: bodyError } = Joi.validate(req.body || {}, toSchema(rules.body), validationOptions);
   if (bodyError) {
     errorData.bodyErrors = errorConverter(bodyError.details);
   }
   // Validate query
-  const { error: queryError } = Joi.validate(
-    req.query || {},
-    toSchema(rules.query),
-    validationOptions
-  );
+  const { error: queryError } = Joi.validate(req.query || {}, toSchema(rules.query), validationOptions);
   if (queryError) {
     errorData.queryErrors = errorConverter(queryError.details);
   }

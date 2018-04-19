@@ -18,22 +18,12 @@ const chaincodeService = new ChaincodeService();
  */
 const query = async (req, res, next) => {
   const { funcName } = req.params;
-  const funcArgs = req.body.funcArgs
-    ? { ...req.body.funcArgs }
-    : { funcArgs: "" };
+  const funcArgs = req.body.funcArgs ? { ...req.body.funcArgs } : { funcArgs: "" };
 
-  if (!funcName)
-    return next(
-      new APIError("Arguments missing", httpStatus.BAD_REQUEST, true)
-    );
+  if (!funcName) return next(new APIError("Arguments missing", httpStatus.BAD_REQUEST, true));
 
   try {
-    const request = await chaincodeService.prepareRequest(
-      "user4",
-      funcName,
-      Object.values(funcArgs),
-      false
-    );
+    const request = await chaincodeService.prepareRequest("user4", funcName, Object.values(funcArgs), false);
     const initResult = await chaincodeService.query(request);
     return res.json(initResult);
   } catch (e) {
@@ -56,11 +46,7 @@ const invoke = async (req, res, next) => {
   };
 
   try {
-    const request = await chaincodeService.prepareRequest(
-      "user4",
-      "recordWatchMovement",
-      Object.values(movement)
-    );
+    const request = await chaincodeService.prepareRequest("user4", "recordWatchMovement", Object.values(movement));
     const initResult = await chaincodeService.invoke(request);
     res.json(initResult);
   } catch (e) {
