@@ -15,5 +15,6 @@ script:
 after_script:
   # - yarn report-coverage
 before_install:
+  - cd backend
   - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.6.0
   - export PATH=$HOME/.yarn/bin:$PATH
