@@ -58,7 +58,7 @@
   "devDependencies": {
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
-    "babel-eslint": "^8.2.3",
+    "babel-eslint": "8.2.3",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-function-bind": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
@@ -80,11 +80,11 @@
     "gulp-newer": "1.4.0",
     "gulp-nodemon": "2.2.1",
     "gulp-sourcemaps": "2.6.4",
-    "husky": "^0.14.3",
+    "husky": "0.14.3",
     "istanbul": "1.1.0-alpha.1",
-    "lint-staged": "^7.0.4",
+    "lint-staged": "7.0.4",
     "mocha": "5.1.1",
-    "prettier": "^1.12.1",
+    "prettier": "1.12.1",
     "run-sequence": "2.2.1",
     "supertest": "3.0.0",
     "supertest-as-promised": "4.0.2"
