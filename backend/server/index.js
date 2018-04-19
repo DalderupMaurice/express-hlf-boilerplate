@@ -37,8 +37,10 @@ if (!module.parent) {
   network
     .initFabric()
     .then(res => {
-      Logger().info(`${res.toString()}\n\n`);
-      if (res) return network.register("user4", "org1.department1");
+      if (res) {
+        Logger().info(`${res.toString()}\n\n`);
+        return network.register("user4", "org1.department1");
+      }
     })
     .then(res => {
       Logger().info(`${res.toString()}\n\n`);
