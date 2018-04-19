@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - "8.11"
-  - "9.11"
+  - "9.9"
 services:
   - mongodb
 cache:
