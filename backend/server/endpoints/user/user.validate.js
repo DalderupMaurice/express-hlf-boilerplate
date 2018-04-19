@@ -1,6 +1,8 @@
-import Joi from 'joi';
+import Joi from "joi";
 
-const userId = Joi.string().hex().required();
+const userId = Joi.string()
+  .hex()
+  .required();
 const username = Joi.string().required();
 const password = Joi.string().required();
 const enrollmentSecret = Joi.string().required();

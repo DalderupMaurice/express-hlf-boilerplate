@@ -1,13 +1,15 @@
-import User from './user.model';
+import User from "./user.model";
 
 /**
  * Load user and append to req.
  */
 const load = (req, res, next, id) => {
-  User.get(id).then(user => {
-    req.user = user; // eslint-disable-line no-param-reassign
-    return next();
-  }).catch(e => next(e));
+  User.get(id)
+    .then(user => {
+      req.user = user; // eslint-disable-line no-param-reassign
+      return next();
+    })
+    .catch(e => next(e));
 };
 
 /**
@@ -28,7 +30,10 @@ const create = (req, res, next) => {
     password: req.body.password
   });
 
-  user.save().then(savedUser => res.json(savedUser)).catch(e => next(e));
+  user
+    .save()
+    .then(savedUser => res.json(savedUser))
+    .catch(e => next(e));
 };
 
 /**
@@ -42,7 +47,10 @@ const update = (req, res, next) => {
   user.username = req.body.username;
   user.mobileNumber = req.body.mobileNumber;
 
-  user.save().then(savedUser => res.json(savedUser)).catch(e => next(e));
+  user
+    .save()
+    .then(savedUser => res.json(savedUser))
+    .catch(e => next(e));
 };
 
 /**
@@ -58,7 +66,9 @@ const list = (req, res, next) => {
   const _req$query$skip = _req$query.skip;
   const skip = _req$query$skip === undefined ? 0 : _req$query$skip;
 
-  User.list({ limit, skip }).then(users => res.json(users)).catch(e => next(e));
+  User.list({ limit, skip })
+    .then(users => res.json(users))
+    .catch(e => next(e));
 };
 
 /**
@@ -67,9 +77,17 @@ const list = (req, res, next) => {
  */
 const remove = (req, res, next) => {
   const { user } = req;
-  user.remove().then(deletedUser => res.json(deletedUser)).catch(e => next(e));
+  user
+    .remove()
+    .then(deletedUser => res.json(deletedUser))
+    .catch(e => next(e));
 };
 
 export default {
-  load, get, create, update, list, remove
+  load,
+  get,
+  create,
+  update,
+  list,
+  remove
 };

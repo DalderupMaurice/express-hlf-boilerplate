@@ -1,7 +1,7 @@
-import Promise from 'bluebird';
-import mongoose from 'mongoose';
-import httpStatus from 'http-status';
-import APIError from '../../utils/APIError';
+import Promise from "bluebird";
+import mongoose from "mongoose";
+import httpStatus from "http-status";
+import APIError from "../../utils/APIError";
 
 /**
  * User Schema
@@ -47,15 +47,16 @@ UserSchema.statics = {
    * @returns {Promise<User, APIError>}
    */
   get: function get(id) {
-    return this.findById(id).exec().then(user => {
-      if (user) {
-        return user;
-      }
-      const err = new APIError('No such user exists!', httpStatus.NOT_FOUND);
-      return Promise.reject(err);
-    });
+    return this.findById(id)
+      .exec()
+      .then(user => {
+        if (user) {
+          return user;
+        }
+        const err = new APIError("No such user exists!", httpStatus.NOT_FOUND);
+        return Promise.reject(err);
+      });
   },
-
 
   /**
    * List users in descending order of 'createdAt' timestamp.
@@ -70,7 +71,10 @@ UserSchema.statics = {
     const _ref$limit = _ref.limit;
     const limit = _ref$limit === undefined ? 50 : _ref$limit;
 
-    return this.find().sort({ createdAt: -1 }).skip(+skip).limit(+limit)
+    return this.find()
+      .sort({ createdAt: -1 })
+      .skip(+skip)
+      .limit(+limit)
       .exec();
   }
 };
@@ -78,4 +82,4 @@ UserSchema.statics = {
 /**
  * @typedef User
  */
-export default mongoose.model('User', UserSchema);
+export default mongoose.model("User", UserSchema);

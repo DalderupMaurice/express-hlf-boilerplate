@@ -1,7 +1,7 @@
-import httpStatus from 'http-status';
+import httpStatus from "http-status";
 
-import Joi from 'joi';
-import APIError from '../utils/APIError';
+import Joi from "joi";
+import APIError from "../utils/APIError";
 
 const validate = (req, rules = {}) => {
   const toSchema = rule => {
@@ -13,18 +13,24 @@ const validate = (req, rules = {}) => {
     // Unless if it's null, validate an empty object.
     return Joi.object().keys(rule || {});
   };
-    // Utility to convert array of Joi errors of form {message, path, type, context} to
-    // an object of form {path: type}.
-  const errorConverter = joiDetails => joiDetails.reduce((acc, curr) =>
-    Object.assign({}, acc, { [curr.path]: { type: curr.type, message: curr.message } }), {});
-    // Validation options. Return all errors (abortEarly) and don't autocast
-    // values to the required types! Consider everything required by default.
+  // Utility to convert array of Joi errors of form {message, path, type, context} to
+  // an object of form {path: type}.
+  const errorConverter = joiDetails =>
+    joiDetails.reduce(
+      (acc, curr) =>
+        Object.assign({}, acc, {
+          [curr.path]: { type: curr.type, message: curr.message }
+        }),
+      {}
+    );
+  // Validation options. Return all errors (abortEarly) and don't autocast
+  // values to the required types! Consider everything required by default.
   const validationOptions = {
     abortEarly: false,
     convert: false,
-    presence: 'required',
+    presence: "required"
   };
-    // Aggregate error details herein.
+  // Aggregate error details herein.
   const errorData = {};
   // Validate params
   const { error: paramError } = Joi.validate(

@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from "joi";
 
 export default {
   // POST /api/users
@@ -18,7 +18,9 @@ export default {
       enrollmentSecret: Joi.string().required()
     },
     params: {
-      userId: Joi.string().hex().required()
+      userId: Joi.string()
+        .hex()
+        .required()
     }
   },
 
@@ -28,7 +30,5 @@ export default {
       username: Joi.string().required(),
       password: Joi.string().required()
     }
-  },
-
-
+  }
 };

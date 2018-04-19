@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from "joi";
 
 const key = Joi.string().uuid();
 const transporter = Joi.string();
@@ -26,8 +26,4 @@ const updateSchema = {
   }
 };
 
-export {
-  getOneSchema,
-  addSchema,
-  updateSchema
-};
+export { getOneSchema, addSchema, updateSchema };

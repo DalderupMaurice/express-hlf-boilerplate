@@ -1,0 +1,15 @@
+{
+  presets: [
+    "env"
+  ],
+  plugins: [
+    [
+      "transform-object-rest-spread",
+      {
+        useBuiltIns: true
+      }
+    ],
+    "transform-function-bind",
+    "transform-class-properties"
+  ]
+}
