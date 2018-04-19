@@ -2,10 +2,10 @@
   <img src="./logo.png" width="150px" /> 
 </p>
 
-<h1 align="center">Express boilerplate</h1>
+<h1 align="center">Express boilerplate with the Hyperledger SDK</h1>
 
 <p align="center">
-  This creates a project <strong>boilerplate</strong> for <strong>Express</strong> with a custom stack
+  This creates a project <strong>boilerplate</strong> for <strong>Express boilerplate with the Hyperledger SDK</strong>
 </p>
 
 <p align="center">
