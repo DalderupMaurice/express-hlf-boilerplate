@@ -14,7 +14,15 @@ let eventHub = null;
 let adminUser = null;
 let memberUser = null;
 
-const { CHANNEL_NAME, PEERS, ORDERERS, CA_DOMAIN, CA_URL, ORG_MSP, EVENTHUB } = config;
+const {
+  CHANNEL_NAME,
+  PEERS,
+  ORDERERS,
+  CA_DOMAIN,
+  CA_URL,
+  ORG_MSP,
+  EVENTHUB
+} = config;
 
 // TODO - deleting the keys without network restart register() fails => user already registered
 // TODO - question: WHAT is the secret after registration and you want to retrieve your user
@@ -25,7 +33,9 @@ const register = async (user, org, secret = null) => {
 
   // If user is already enrolled, return
   if (userFromStore && userFromStore.isEnrolled()) {
-    Logger(labels.NETWORK).info(`Returning from storage, ${userFromStore._name} is already enrolled.`);
+    Logger(labels.NETWORK).info(
+      `Returning from storage, ${userFromStore._name} is already enrolled.`
+    );
     return Promise.resolve(userFromStore);
   }
 
@@ -114,7 +124,12 @@ const initFabric = async () => {
 
   // Set Fabric Certificate Authority client
   // be sure to change the http to https when the CA is running TLS enabled
-  fabricCaClient = new Fabric_CA_Client(CA_URL, tlsOptions, CA_DOMAIN, cryptoSuite);
+  fabricCaClient = new Fabric_CA_Client(
+    CA_URL,
+    tlsOptions,
+    CA_DOMAIN,
+    cryptoSuite
+  );
 
   // Check if admin is enrolled
   const userFromStore = await fabricClient.getUserContext("admin", true);

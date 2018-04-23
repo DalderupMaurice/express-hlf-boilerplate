@@ -95,7 +95,7 @@
     "*.{js,css}": [
       "yarn lint",
       "prettier --print-width=120 --write",
-      "git add"
+      "git add ."
     ]
   },
   "repository": {

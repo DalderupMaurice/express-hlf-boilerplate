@@ -49,7 +49,8 @@ if (config.env === "development") {
       expressFormat: true,
       colorize: true,
       meta: true, // optional: log meta data about request (defaults to true)
-      msg: "HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
+      msg:
+        "HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
       colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
     })
   );
@@ -62,7 +63,9 @@ app.use("/", routes);
 app.use((err, req, res, next) => {
   if (err instanceof expressValidation.ValidationError) {
     // validation error contains errors which is an array of error each containing message[]
-    const unifiedErrorMessage = err.errors.map(error => error.messages.join(". ")).join(" and ");
+    const unifiedErrorMessage = err.errors
+      .map(error => error.messages.join(". "))
+      .join(" and ");
     const error = new APIError(unifiedErrorMessage, err.status, true);
     return next(error);
   } else if (!(err instanceof APIError)) {
@@ -91,7 +94,11 @@ if (config.env !== "test") {
 app.use((err, req, res) =>
   res.status(err.status).json({
     message: err.isPublic ? err.message : httpStatus[err.status],
-    stack: config.env === "development" && err.status === httpStatus.INTERNAL_SERVER_ERROR ? err.stack : {}
+    stack:
+      config.env === "development" &&
+      err.status === httpStatus.INTERNAL_SERVER_ERROR
+        ? err.stack
+        : {}
   })
 );
 
