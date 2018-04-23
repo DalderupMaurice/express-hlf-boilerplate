@@ -27,7 +27,8 @@ const get = (req, res) => res.json(req.user);
 const create = (req, res, next) => {
   const user = new User({
     username: req.body.username,
-    password: req.body.password
+    password: req.body.password,
+    enrollmentSecret: req.body.enrollmentSecret
   });
 
   user

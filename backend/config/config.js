@@ -22,6 +22,9 @@ const envVarsSchema = Joi.object({
   MONGO_HOST: Joi.string()
     .required()
     .description("Mongo DB host url"),
+  MONGO_HOST_TEST: Joi.string()
+    .required()
+    .description("Mongo DB test host url"),
   MONGO_PORT: Joi.number().default(27017),
   USE_DB: Joi.boolean().default(false),
   ORG_MSP: Joi.string()
@@ -35,24 +38,16 @@ const envVarsSchema = Joi.object({
     .description('The name of the chaincode package. Ex: "my-chaincode"'),
   CA_DOMAIN: Joi.string()
     .required()
-    .description(
-      'The domain of the Certificate Authorithy. Ex: "ca.example.com"'
-    ),
+    .description('The domain of the Certificate Authorithy. Ex: "ca.example.com"'),
   EVENTHUB: Joi.string()
     .required()
-    .description(
-      'The endpoint of any EventHub (Peer address). Ex: "http://localhost:7053"'
-    ),
+    .description('The endpoint of any EventHub (Peer address). Ex: "http://localhost:7053"'),
   PEER1: Joi.string()
     .required()
-    .description(
-      'The endpoint of any peer (Can be multiple.. PEER2, PEER3,..). Ex: "http://localhost:7050"'
-    ),
+    .description('The endpoint of any peer (Can be multiple.. PEER2, PEER3,..). Ex: "http://localhost:7050"'),
   ORDERER1: Joi.string()
     .required()
-    .description(
-      'The endpoint of any orderer (Can be multiple.. ORDERER2, ORDERER3,..). Ex: "http://localhost:7051"'
-    )
+    .description('The endpoint of any orderer (Can be multiple.. ORDERER2, ORDERER3,..). Ex: "http://localhost:7051"')
 })
   .unknown()
   .required();
@@ -74,6 +69,7 @@ const config = {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT
   },
+  mongo_test: envVars.MONGO_HOST_TEST,
   useDb: envVars.USE_DB,
   ORG_MSP: envVars.ORG_MSP,
   CHANNEL_NAME: envVars.CHANNEL_NAME,
