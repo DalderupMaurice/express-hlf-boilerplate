@@ -16,6 +16,9 @@ import routes from "../server/index.route";
 import config from "./config";
 import APIError from "../server/utils/APIError";
 
+const passport = require("passport");
+const Auth0Strategy = require("passport-auth0");
+
 const app = express();
 
 if (config.env === "development") {
@@ -49,12 +52,37 @@ if (config.env === "development") {
       expressFormat: true,
       colorize: true,
       meta: true, // optional: log meta data about request (defaults to true)
-      msg:
-        "HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
+      msg: "HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
       colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
     })
   );
 }
+
+// Configure Passport to use Auth0
+const strategy = new Auth0Strategy(
+  {
+    domain: "hlf-example.eu.auth0.com",
+    clientID: "KZU5JD5A2fQCZHUNnWwUhinRsrfwnqu9",
+    clientSecret: "i8p37joZ5yBPAmECGNO0nEn_wXBNyN3mp2vCIv2OiFizqmoYqPGf_uAF0gNaPCgz",
+    callbackURL: "http://localhost:3000/api/auth/callback"
+  },
+  (accessToken, refreshToken, extraParams, profile, done) => done(null, profile)
+);
+
+passport.use(strategy);
+
+// This can be used to keep a smaller payload
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+// ...
+app.use(passport.initialize());
+app.use(passport.session());
 
 // mount all routes on /api path
 app.use("/", routes);
@@ -63,9 +91,7 @@ app.use("/", routes);
 app.use((err, req, res, next) => {
   if (err instanceof expressValidation.ValidationError) {
     // validation error contains errors which is an array of error each containing message[]
-    const unifiedErrorMessage = err.errors
-      .map(error => error.messages.join(". "))
-      .join(" and ");
+    const unifiedErrorMessage = err.errors.map(error => error.messages.join(". ")).join(" and ");
     const error = new APIError(unifiedErrorMessage, err.status, true);
     return next(error);
   } else if (!(err instanceof APIError)) {
@@ -94,11 +120,7 @@ if (config.env !== "test") {
 app.use((err, req, res) =>
   res.status(err.status).json({
     message: err.isPublic ? err.message : httpStatus[err.status],
-    stack:
-      config.env === "development" &&
-      err.status === httpStatus.INTERNAL_SERVER_ERROR
-        ? err.stack
-        : {}
+    stack: config.env === "development" && err.status === httpStatus.INTERNAL_SERVER_ERROR ? err.stack : {}
   })
 );
 

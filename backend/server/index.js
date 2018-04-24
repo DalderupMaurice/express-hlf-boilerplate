@@ -10,6 +10,7 @@ import app from "../config/express";
 import Logger from "../config/Log";
 
 // make bluebird default Promise
+
 Promise = require("bluebird"); // eslint-disable-line no-global-assign
 
 // Debug props
