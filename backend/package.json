@@ -103,5 +103,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/DalderupMaurice/express-hlf-example.git"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": ["<rootDir>/dist/"]
   }
 }
