@@ -1,6 +1,5 @@
 import { Router } from "express";
 import validate from "express-validation";
-
 import { getOneSchema, addSchema, updateSchema } from "./movement.validation";
 
 import {

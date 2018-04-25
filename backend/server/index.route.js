@@ -9,7 +9,7 @@ export default Router()
   .get("/", (req, res) =>
     res.send("OK")
   ) /** GET /health-check - Check service health */
-  .use("/api/users", userRoutes) // mount user routes at /users
-  .use("/api/auth", authRoutes) // mount auth routes at /auth
+  .use("", authRoutes) // mount auth routes at root
+  .use("/api/user", userRoutes) // mount user routes at /users
   .use("/api/chain", chainRoutes) // mount chaincode routes at /chain
   .use("/api/movement", movementRoutes); // mount movement routes at /movement

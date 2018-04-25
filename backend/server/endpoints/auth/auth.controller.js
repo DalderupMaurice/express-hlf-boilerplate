@@ -1,60 +1,49 @@
-import jwt from "jsonwebtoken";
-import httpStatus from "http-status";
-
-import APIError from "../../utils/APIError";
 import config from "../../../config/config";
 
-// sample user, used for authentication
-const user = {
-  username: "react",
-  password: "express"
-};
+import jwt, { sign } from "express-jwt";
+import jwtAuthz from "express-jwt-authz";
+import { expressJwtSecret } from "jwks-rsa";
+
+import httpStatus from "http-status";
+import APIError from "../../utils/APIError";
+
+const passport = require("passport");
+
+const request = require("superagent");
 
 /**
- * Returns jwt token if valid username and password is provided
- * @param req
- * @param res
- * @param next
- * @returns {*}
+ * Redirect to the auth0 login page
  */
-const login = (req, res, next) => {
-  // Ideally you'll fetch this from the db
-  // Idea here was to show how jwt works with simplicity
-  if (
-    req.body.username === user.username &&
-    req.body.password === user.password
-  ) {
-    const token = jwt.sign(
-      {
-        username: user.username
-      },
-      config.jwtSecret
-    );
-    return res.json({
-      token,
-      username: user.username
+const getAccessToken = passport.authenticate("auth0", {
+  clientID: config.AUTH0_CLIENTID,
+  domain: config.env.AUTH0_DOMAIN,
+  redirectUri: "http://localhost:3000/callback",
+  responseType: "code",
+  scope: "openid profile email"
+});
+
+const callback = (req, res) => {
+  const options = {
+    uri: "https://hlf-example.eu.auth0.com/oauth/token",
+    body: {
+      grant_type: "authorization_code",
+      client_id: "KZU5JD5A2fQCZHUNnWwUhinRsrfwnqu9",
+      client_secret:
+        "i8p37joZ5yBPAmECGNO0nEn_wXBNyN3mp2vCIv2OiFizqmoYqPGf_uAF0gNaPCgz",
+      code: req.query.code,
+      redirect_uri: "http://localhost:3000/callback"
+    }
+  };
+
+  request
+    .post(options.uri)
+    .send(options.body) // sends a JSON post body
+    .set("accept", "json")
+    .end((err, response) => {
+      // Calling the end function will send the request
+      console.log("RESULT OF GET TOKEN", response.text);
+      return res.json(response.text);
     });
-  }
-
-  const err = new APIError(
-    "Authentication error",
-    httpStatus.UNAUTHORIZED,
-    true
-  );
-  return next(err);
 };
 
-/**
- * This is a protected route. Will return random number only if jwt token is provided in header.
- * @param req
- * @param res
- * @returns {*}
- */
-const getRandomNumber = (req, res) =>
-  // req.user is assigned by jwt middleware if valid token is provided
-  res.json({
-    user: req.user,
-    num: Math.random() * 100
-  });
-
-export { login, getRandomNumber };
+export { getAccessToken, callback };
