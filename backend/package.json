@@ -86,7 +86,7 @@
     "husky": "0.14.3",
     "istanbul": "1.1.0-alpha.1",
     "jest": "22.4.3",
-    "lint-staged": "7.0.4",
+    "lint-staged": "7.0.5",
     "mocha": "5.1.1",
     "prettier": "1.12.1",
     "run-sequence": "2.2.1",
