@@ -44,6 +44,7 @@
     "express-jwt": "^5.3.1",
     "express-jwt-authz": "^1.0.0",
     "express-queue": "^0.0.12",
+    "express-session": "^1.15.6",
     "express-validation": "^1.0.2",
     "express-winston": "^2.5.1",
     "fabric-ca-client": "^1.1.0",

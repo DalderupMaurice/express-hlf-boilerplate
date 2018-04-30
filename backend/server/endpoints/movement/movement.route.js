@@ -1,15 +1,10 @@
-import { Router } from "express";
 import validate from "express-validation";
-import { getOneSchema, addSchema, updateSchema } from "./movement.validation";
-import { verifyJwt } from "./../auth/auth.controller";
 
-import {
-  init,
-  queryAll,
-  queryByArgs,
-  add,
-  transfer
-} from "./movement.controller";
+import { Router } from "express";
+import { getOneSchema, addSchema, updateSchema } from "./movement.validation";
+import { verifyJwt } from "./../../services/auth.service";
+
+import { init, queryAll, queryByArgs, add, transfer } from "./movement.controller";
 
 export default Router()
   .get("/init", init)
