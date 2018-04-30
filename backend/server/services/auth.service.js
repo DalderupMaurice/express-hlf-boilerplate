@@ -19,15 +19,6 @@ const strategy = new Auth0Strategy(
 
 passport.use(strategy);
 
-// This can be used to keep a smaller payload
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
-
 const login = passport.authenticate("auth0");
 
 const logout = (req, res) => {
