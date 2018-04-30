@@ -16,6 +16,8 @@ import routes from "../server/index.route";
 import config from "./config";
 import APIError from "../server/utils/APIError";
 
+const passport = require("passport");
+
 const app = express();
 
 if (config.env === "development") {
@@ -25,6 +27,9 @@ if (config.env === "development") {
 // parse body params and attache them to req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(cookieParser());
 app.use(compress());

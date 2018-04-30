@@ -35,16 +35,13 @@
     "body-parser": "^1.18.2",
     "boom": "^7.2.0",
     "compression": "^1.7.2",
-    "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "debug": "^3.1.0",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",
-    "express-jwt-authz": "^1.0.0",
     "express-queue": "^0.0.12",
-    "express-session": "^1.15.6",
     "express-validation": "^1.0.2",
     "express-winston": "^2.5.1",
     "fabric-ca-client": "^1.1.0",
@@ -53,14 +50,12 @@
     "http-status": "^1.0.1",
     "joi": "^13.2.0",
     "jsonwebtoken": "^8.2.1",
-    "jwks-rsa": "^1.2.1",
     "method-override": "^2.3.10",
     "moment": "^2.22.1",
     "mongoose": "^5.0.15",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
     "passport-auth0": "^0.6.1",
-    "request-promise": "^4.2.2",
     "superagent": "^3.8.2",
     "uuid": "^3.2.1",
     "winston": "^2.4.1"
@@ -111,10 +106,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/DalderupMaurice/express-hlf-example.git"
-  },
-  "jest": {
-    "modulePathIgnorePatterns": [
-      "<rootDir>/dist/"
-    ]
   }
 }

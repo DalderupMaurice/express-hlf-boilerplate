@@ -16,9 +16,23 @@ const strategy = new Auth0Strategy(
     done(null, profile);
   }
 );
+
 passport.use(strategy);
 
+// This can be used to keep a smaller payload
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
 const login = passport.authenticate("auth0");
+
+const logout = (req, res) => {
+  res.redirect(`${config.AUTH0.LOGOUT}?returnTo=${config.APP_HOME}&client_id=${config.AUTH0.CLIENT_ID}`);
+};
 
 /**
  * Callback from oAuth login. Use the access code to obtain the bearer token
@@ -41,11 +55,7 @@ const callback = (req, res) => {
     .set("accept", "json")
     .end((err, response) =>
       // TODO: User create code
-      res.redirect(
-        `${config.FRONTEND_DEFAULT_TOKEN_CALLBACK} ${
-          JSON.parse(response.text).id_token
-        }`
-      )
+      res.redirect(`${config.APP_HOME}?code=${JSON.parse(response.text).id_token}`)
     );
 };
 
@@ -80,4 +90,4 @@ const verifyJwt = (req, res, next) => {
   }
 };
 
-export { login, callback, verifyJwt };
+export { login, logout, callback, verifyJwt };
