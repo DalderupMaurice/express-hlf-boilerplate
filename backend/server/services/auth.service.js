@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import config from "../../config/config";
+import Auth0Strategy from "passport-auth0";
+import passport from "passport";
+import request from "superagent";
 
-const Auth0Strategy = require("passport-auth0");
-const passport = require("passport");
-const request = require("superagent");
+import config from "../../config/config";
 
 const strategy = new Auth0Strategy(
   {
