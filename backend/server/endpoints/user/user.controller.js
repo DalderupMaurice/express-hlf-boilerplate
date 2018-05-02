@@ -16,7 +16,13 @@ const load = (req, res, next, id) => {
  * Get user
  * @returns {User}
  */
-const get = (req, res) => res.json(req.user);
+// const get = (req, res) => res.json(req.user);
+
+const get = (req, res) => {
+  User.findById(req.query.id).then(user => {
+    res.json(user);
+  });
+};
 
 /**
  * Create new user

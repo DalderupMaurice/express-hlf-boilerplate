@@ -19,7 +19,7 @@ const envVarsSchema = Joi.object({
   JWT_SECRET: Joi.string()
     .required()
     .description("JWT Secret required to sign"),
-  MONGO_HOST: Joi.string()
+  MONGO_URI: Joi.string()
     .required()
     .description("Mongo DB host url"),
   MONGO_HOST_TEST: Joi.string()
@@ -84,7 +84,8 @@ const config = {
     ACCESS_SCOPE: envVars.AUTH0_ACCESS_SCOPE,
     BASE_URL: envVars.AUTH0_BASE_URL,
     CALLBACK: envVars.AUTH0_CALLBACK,
-    CLIENT_ID: envVars.AUTH0_CLIENT_ID
+    CLIENT_ID: envVars.AUTH0_CLIENT_ID,
+    CLIENT_SECRET: envVars.AUTH0_CLIENT_SECRET
   }
 };
 
