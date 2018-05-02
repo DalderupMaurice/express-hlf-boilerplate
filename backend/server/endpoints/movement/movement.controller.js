@@ -1,11 +1,7 @@
 import ChaincodeService from "../../services/chain.service";
 import validate from "../../services/validate.service";
 import { getOneSchema, addSchema, updateSchema } from "./movement.validation";
-import {
-  addRequestToArgs,
-  getOneRequestToArgs,
-  updateRequestToArgs
-} from "./movement.model";
+import { addRequestToArgs, getOneRequestToArgs, updateRequestToArgs } from "./movement.model";
 
 const INIT_LEDGER = "initLedger";
 const ADD_MOVEMENT = "recordWatchMovement";
@@ -23,11 +19,7 @@ const chaincodeService = new ChaincodeService();
  */
 const init = async (req, res, next) => {
   try {
-    const chaincodeRequest = await chaincodeService.prepareRequest(
-      "user4",
-      INIT_LEDGER,
-      [""]
-    );
+    const chaincodeRequest = await chaincodeService.prepareRequest(req, INIT_LEDGER, [""]);
     const initResult = await chaincodeService.invoke(chaincodeRequest);
     res.json(initResult);
   } catch (e) {
@@ -44,12 +36,7 @@ const init = async (req, res, next) => {
  */
 const queryAll = async (req, res, next) => {
   try {
-    const chaincodeRequest = await chaincodeService.prepareRequest(
-      "user4",
-      QUERY_ALL_MOVEMENT,
-      [""],
-      false
-    );
+    const chaincodeRequest = await chaincodeService.prepareRequest(req, QUERY_ALL_MOVEMENT, [""], false);
     const initResult = await chaincodeService.query(chaincodeRequest);
     res.json(initResult);
   } catch (e) {
@@ -61,12 +48,7 @@ const queryByArgs = async (req, res, next) => {
   try {
     const validatedAPIRequest = await validate(req, getOneSchema);
     const args = getOneRequestToArgs(validatedAPIRequest);
-    const chaincodeRequest = await chaincodeService.prepareRequest(
-      "user4",
-      QUERY_ONE_MOVEMENT,
-      args,
-      false
-    );
+    const chaincodeRequest = await chaincodeService.prepareRequest(req, QUERY_ONE_MOVEMENT, args, false);
     const initResult = await chaincodeService.query(chaincodeRequest);
     res.json(initResult);
   } catch (e) {
@@ -78,11 +60,7 @@ const add = async (req, res, next) => {
   try {
     const validatedAPIRequest = await validate(req, addSchema);
     const args = addRequestToArgs(validatedAPIRequest);
-    const chaincodeRequest = await chaincodeService.prepareRequest(
-      "user4",
-      ADD_MOVEMENT,
-      args
-    );
+    const chaincodeRequest = await chaincodeService.prepareRequest(req, ADD_MOVEMENT, args);
     const initResult = await chaincodeService.invoke(chaincodeRequest);
     res.json(initResult);
   } catch (e) {
@@ -94,11 +72,7 @@ const transfer = async (req, res, next) => {
   try {
     const validatedAPIRequest = await validate(req, updateSchema);
     const args = updateRequestToArgs(validatedAPIRequest);
-    const chaincodeRequest = await chaincodeService.prepareRequest(
-      "user4",
-      CHANGE_MOVEMENT_HOLDER,
-      args
-    );
+    const chaincodeRequest = await chaincodeService.prepareRequest(req, CHANGE_MOVEMENT_HOLDER, args);
     const initResult = await chaincodeService.invoke(chaincodeRequest);
     res.json(initResult);
   } catch (e) {
