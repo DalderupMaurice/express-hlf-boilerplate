@@ -38,24 +38,16 @@ const envVarsSchema = Joi.object({
     .description('The name of the chaincode package. Ex: "my-chaincode"'),
   CA_DOMAIN: Joi.string()
     .required()
-    .description(
-      'The domain of the Certificate Authorithy. Ex: "ca.example.com"'
-    ),
+    .description('The domain of the Certificate Authorithy. Ex: "ca.example.com"'),
   EVENTHUB: Joi.string()
     .required()
-    .description(
-      'The endpoint of any EventHub (Peer address). Ex: "http://localhost:7053"'
-    ),
+    .description('The endpoint of any EventHub (Peer address). Ex: "http://localhost:7053"'),
   PEER1: Joi.string()
     .required()
-    .description(
-      'The endpoint of any peer (Can be multiple.. PEER2, PEER3,..). Ex: "http://localhost:7050"'
-    ),
+    .description('The endpoint of any peer (Can be multiple.. PEER2, PEER3,..). Ex: "http://localhost:7050"'),
   ORDERER1: Joi.string()
     .required()
-    .description(
-      'The endpoint of any orderer (Can be multiple.. ORDERER2, ORDERER3,..). Ex: "http://localhost:7051"'
-    )
+    .description('The endpoint of any orderer (Can be multiple.. ORDERER2, ORDERER3,..). Ex: "http://localhost:7051"')
 })
   .unknown()
   .required();
@@ -90,14 +82,9 @@ const config = {
   APP_HOME: envVars.APP_HOME,
   AUTH0: {
     ACCESS_SCOPE: envVars.AUTH0_ACCESS_SCOPE,
-    ACCESS_TYPE: envVars.AUTH0_ACCESS_TYPE,
+    BASE_URL: envVars.AUTH0_BASE_URL,
     CALLBACK: envVars.AUTH0_CALLBACK,
-    CLIENT_ID: envVars.AUTH0_CLIENT_ID,
-    CLIENT_SECRET: envVars.AUTH0_CLIENT_SECRET,
-    DOMAIN: envVars.AUTH0_DOMAIN,
-    GRANT_TYPE: envVars.AUTH0_GRANT_TYPE,
-    LOGOUT: envVars.AUTH0_LOGOUT,
-    TOKEN_URL: envVars.AUTH0_TOKEN_URL
+    CLIENT_ID: envVars.AUTH0_CLIENT_ID
   }
 };
 
