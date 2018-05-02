@@ -41,7 +41,7 @@ if (!module.parent) {
     .then(res => {
       if (res) {
         Logger().info(`${res.toString()}\n\n`);
-        return network.register("user4", "org1.department1");
+        return network.register("joachim.geerts@gmail.com", "org1.department1");
       }
     })
     .then(res => {

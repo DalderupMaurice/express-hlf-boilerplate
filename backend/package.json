@@ -51,6 +51,7 @@
     "http-status": "^1.0.1",
     "joi": "^13.2.0",
     "jsonwebtoken": "^8.2.1",
+    "jwt-decode": "^2.2.0",
     "method-override": "^2.3.10",
     "moment": "^2.22.1",
     "mongoose": "^5.0.15",

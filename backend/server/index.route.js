@@ -1,8 +1,6 @@
 import { Router } from "express";
+import { login, logout, callback, verifyJwt, getDecodedJwt } from "./services/auth.service";
 
-import { login, logout, userInfo, callback, verifyJwt } from "./services/auth.service";
-
-import userRoutes from "./endpoints/user/user.route";
 import chainRoutes from "./endpoints/chain/chain.route";
 import movementRoutes from "./endpoints/movement/movement.route";
 
@@ -12,7 +10,6 @@ export default Router()
   .get("/login", login)
   .get("/logout", logout)
   .get("/callback", callback)
-  .get("/userinfo", userInfo)
-  .use("/api/user", verifyJwt, userRoutes) // mount user routes at /users
+  .get("/me", verifyJwt, getDecodedJwt)
   .use("/api/chain", verifyJwt, chainRoutes) // mount chaincode routes at /chain
   .use("/api/movement", verifyJwt, movementRoutes); // mount movement routes at /movement
