@@ -1,53 +1,55 @@
 import jwt from "jsonwebtoken";
-import Auth0Strategy from "passport-auth0";
-import passport from "passport";
 import request from "superagent";
+import httpStatus from "http-status";
+import buildUrl from "build-url";
 
 import config from "../../config/config";
+import APIError from "../utils/APIError";
 
-const strategy = new Auth0Strategy(
-  {
-    domain: config.AUTH0.DOMAIN,
-    clientID: config.AUTH0.CLIENT_ID,
-    clientSecret: config.AUTH0.CLIENT_SECRET,
-    callbackURL: config.AUTH0.CALLBACK
-  },
-  (accessToken, refreshToken, extraParams, profile, done) => {
-    done(null, profile);
-  }
-);
+const login = (req, res) => {
+  const loginUrl = buildUrl(config.AUTH0.BASE_URL, {
+    path: "authorize",
+    queryParams: {
+      response_type: "token",
+      client_id: config.AUTH0.CLIENT_ID,
+      redirect_uri: config.AUTH0.CALLBACK,
+      scope: config.AUTH0.ACCESS_SCOPE
+    }
+  });
 
-passport.use(strategy);
-
-const login = passport.authenticate("auth0");
+  res.redirect(loginUrl);
+};
 
 const logout = (req, res) => {
-  res.redirect(`${config.AUTH0.LOGOUT}?returnTo=${config.APP_HOME}&client_id=${config.AUTH0.CLIENT_ID}`);
+  const logoutUrl = buildUrl(config.AUTH0.BASE_URL, {
+    path: "v2/logout",
+    queryParams: {
+      returnTo: config.APP_HOME,
+      client_id: config.AUTH0.CLIENT_ID
+    }
+  });
+
+  res.redirect(logoutUrl);
+};
+
+const userInfo = (req, res, next) => {
+  request
+    .get(`${config.AUTH0.BASE_URL}/userinfo`)
+    .set("authorization", req.headers.authorization)
+    .then(response => JSON.parse(response.text))
+    .catch(err => {
+      if (err.status === httpStatus.UNAUTHORIZED) {
+        return next(new APIError("Unauthorized. Verify access_token in headers.", httpStatus.UNAUTHORIZED));
+      }
+      return next(new APIError("Something went wrong when getting data.", httpStatus.INTERNAL_SERVER_ERROR));
+    });
 };
 
 /**
- * Callback from oAuth login. Use the access code to obtain the bearer token
+ * Callback from oAuth login.
  */
 const callback = (req, res) => {
-  const options = {
-    uri: config.AUTH0.TOKEN_URL,
-    body: {
-      grant_type: config.AUTH0.GRANT_TYPE,
-      client_id: config.AUTH0.CLIENT_ID,
-      client_secret: config.AUTH0.CLIENT_SECRET,
-      code: req.query.code,
-      redirect_uri: config.AUTH0.CALLBACK
-    }
-  };
-
-  request
-    .post(options.uri)
-    .send(options.body) // sends a JSON post body
-    .set("accept", "json")
-    .end((err, response) =>
-      // TODO: User create code
-      res.redirect(`${config.APP_HOME}?code=${JSON.parse(response.text).id_token}`)
-    );
+  res.redirect(`${config.APP_HOME}`);
 };
 
 /**
@@ -81,4 +83,4 @@ const verifyJwt = (req, res, next) => {
   }
 };
 
-export { login, logout, callback, verifyJwt };
+export { login, logout, userInfo, callback, verifyJwt };

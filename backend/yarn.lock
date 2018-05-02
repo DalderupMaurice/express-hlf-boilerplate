@@ -1236,6 +1236,10 @@ buffer-shims@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/buffer-shims/-/buffer-shims-1.0.0.tgz#9978ce317388c649ad8793028c3477ef044a8b51"
 
+build-url@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/build-url/-/build-url-1.1.1.tgz#f307b55116499cfdabc0488f15da47c7ec5b5801"
+
 builtin-modules@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-1.1.1.tgz#270f076c5a72c02f5b65a47df94c5fe3a278892f"
