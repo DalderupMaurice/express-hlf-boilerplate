@@ -1,5 +1,4 @@
 import { Router } from "express";
-
 import { login, logout, callback, verifyJwt, getDecodedJwt } from "./services/auth.service";
 
 import chainRoutes from "./endpoints/chain/chain.route";

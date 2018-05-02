@@ -38,16 +38,24 @@ const envVarsSchema = Joi.object({
     .description('The name of the chaincode package. Ex: "my-chaincode"'),
   CA_DOMAIN: Joi.string()
     .required()
-    .description('The domain of the Certificate Authorithy. Ex: "ca.example.com"'),
+    .description(
+      'The domain of the Certificate Authorithy. Ex: "ca.example.com"'
+    ),
   EVENTHUB: Joi.string()
     .required()
-    .description('The endpoint of any EventHub (Peer address). Ex: "http://localhost:7053"'),
+    .description(
+      'The endpoint of any EventHub (Peer address). Ex: "http://localhost:7053"'
+    ),
   PEER1: Joi.string()
     .required()
-    .description('The endpoint of any peer (Can be multiple.. PEER2, PEER3,..). Ex: "http://localhost:7050"'),
+    .description(
+      'The endpoint of any peer (Can be multiple.. PEER2, PEER3,..). Ex: "http://localhost:7050"'
+    ),
   ORDERER1: Joi.string()
     .required()
-    .description('The endpoint of any orderer (Can be multiple.. ORDERER2, ORDERER3,..). Ex: "http://localhost:7051"')
+    .description(
+      'The endpoint of any orderer (Can be multiple.. ORDERER2, ORDERER3,..). Ex: "http://localhost:7051"'
+    )
 })
   .unknown()
   .required();

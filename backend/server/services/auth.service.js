@@ -47,3 +47,4 @@ const getDecodedJwt = (req, res) => {
 };
 
 export { login, logout, callback, verifyJwt, getDecodedJwt };
+
