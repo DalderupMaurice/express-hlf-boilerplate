@@ -1,5 +1,6 @@
 import jwt from "express-jwt";
 import buildUrl from "build-url";
+import jwtDecode from "jwt-decode";
 
 import config from "../../config/config";
 
@@ -41,4 +42,8 @@ const callback = (req, res) => {
  */
 const verifyJwt = jwt({ secret: config.AUTH0.CLIENT_SECRET });
 
-export { login, logout, callback, verifyJwt };
+const getDecodedJwt = (req, res) => {
+  res.json(jwtDecode(req.headers.authorization));
+};
+
+export { login, logout, callback, verifyJwt, getDecodedJwt };

@@ -1,5 +1,5 @@
 import httpStatus from "http-status";
-import { jwt_decode as JwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 
 import network from "./network.service";
 import Logger from "../../config/Log";
@@ -20,9 +20,13 @@ export default class ChaincodeService {
     new Promise(async (resolve, reject) => {
       this.fabricClient = network.getFabricClient();
       this.channel = network.getChannel();
-      const user = network.register(JwtDecode(req.headers.authorization).email, "org1.department1");
 
-      const userContext = await this.fabricClient.getUserContext(user, true).catch(err => reject(err));
+      // TODO Improve this code
+      //-------------------------
+      const user = await network.register(jwtDecode(req.headers.authorization).email, "org1.department1");
+      //-------------------------
+
+      const userContext = await this.fabricClient.getUserContext(user._name, true).catch(err => reject(err));
       if (!validateUser(userContext)) return reject(new APIError("User not yet enrolled.", httpStatus.NOT_FOUND, true));
 
       const txId = this.fabricClient.newTransactionID();
