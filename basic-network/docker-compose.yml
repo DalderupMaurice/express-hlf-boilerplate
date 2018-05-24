@@ -10,7 +10,7 @@ networks:
 
 services:
   ca.example.com:
-    image: hyperledger/fabric-ca
+    image: hyperledger/fabric-ca:latest@sha256:0a81cbc3e8accd8ea6d0b377b3766efbf585c21ef7fe147e2e0f3aa629472e03
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.example.com
@@ -27,7 +27,7 @@ services:
 
   orderer.example.com:
     container_name: orderer.example.com
-    image: hyperledger/fabric-orderer
+    image: hyperledger/fabric-orderer:latest@sha256:7a0a6ca2bbddff69ddf63615cdddfe46bf5f2fe7c55530a092d597d99bd2a4bb
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
@@ -48,7 +48,7 @@ services:
 
   peer0.org1.example.com:
     container_name: peer0.org1.example.com
-    image: hyperledger/fabric-peer
+    image: hyperledger/fabric-peer:latest@sha256:b1d49f180410136f25b3e9283c242cf319f4c8cb27f0ef1d9de532a4dd131afe
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_PEER_ID=peer0.org1.example.com
@@ -100,7 +100,7 @@ services:
 
   cli:
     container_name: cli
-    image: hyperledger/fabric-tools
+    image: hyperledger/fabric-tools:latest@sha256:720463b591afcfda1a237a024cabe16ea8a9611f4fd1eb5b816a53537c965987
     tty: true
     environment:
       - GOPATH=/opt/gopath
