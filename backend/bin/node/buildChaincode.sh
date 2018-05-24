@@ -23,13 +23,13 @@ PROJECT_NAME="hlf-first-app"
 starttime=$(date +%s)
 
 # Move Go files to $GOPATH/src to compile it
-printf "${GREEN}Copying Go files from '$PROJECT_NAME' to '$GOPATH' ${NORMAL} \n"
-rm -rf $GOPATH/src/$PROJECT_NAME
-mkdir $GOPATH/src/$PROJECT_NAME
-cp -af ../chaincode/* $GOPATH/src/$PROJECT_NAME/
+# printf "${GREEN}Copying Go files from '$PROJECT_NAME' to '$GOPATH' ${NORMAL} \n"
+# rm -rf $GOPATH/src/$PROJECT_NAME
+# mkdir $GOPATH/src/$PROJECT_NAME
+# cp -af ../chaincode/* $GOPATH/src/$PROJECT_NAME/
 
 printf "${GREEN}Building go.. ${NORMAL} \n"
-cd $GOPATH/src/$PROJECT_NAME/
+#cd $GOPATH/src/$PROJECT_NAME/
 #go get -u --tags nopkcs11 github.com/hyperledger/fabric/core/chaincode/shim
 #go build --tags nopkcs11
 #./chaincode

@@ -11,7 +11,7 @@ export MSYS_NO_PATHCONV=1
 
 # Global config variables
 export CHANNEL_NAME="mychannel"
-export CHAINCODE_NAME="watchmovement-app"
+export CHAINCODE_NAME="myChain"
 export ORDERER_ADDR="orderer.example.com:7050"
 
 

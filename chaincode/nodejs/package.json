@@ -1,0 +1,17 @@
+{
+  "name": "myApp",
+  "version": "1.0.0",
+  "engine-strict": true,
+  "description": "",
+  "main": "src/myChain.js",
+  "scripts": {
+    "start": "node src/wse-odb.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "fabric-shim": "1.1.2",
+    "moment": "2.22.1"
+  }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Biljart",
+    "reference": "ewej-jai21o-q343q-fqeq3",
+    "website": "www.biljarter.be",
+    "characteristics": "arbeidsmarktgericht",
+    "competences": "klantgericht",
+    "startDate": "01/02/1995",
+    "providerId": "gjeoe-3jwor-r3w90-jr0w33",
+    "isValid": true
+  },
+  {
+    "name": "Houthakker",
+    "reference": "ewej-jaio-q343q-fqeq3",
+    "website": "www.houthakker.be",
+    "characteristics": "arbeidsmarktgericht",
+    "competences": "klantgericht",
+    "startDate": "01/02/1995",
+    "providerId": "gjeoe-3jwor-r3w90-jr0w33",
+    "isValid": true
+  }
+]
