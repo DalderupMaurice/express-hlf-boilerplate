@@ -12,7 +12,7 @@ export MSYS_NO_PATHCONV=1
 # Global config variables
 export CHANNEL_NAME="mychannel"
 export CHAINCODE_NAME="myChain"
-export CHAINCODE_PATH="../chaincode/node/myChain"
+export CHAINCODE_PATH="../../../nodejs" # Dir of chaincode location WITHIN the docker container
 export ORDERER_ADDR="orderer.example.com:7050"
 
 
@@ -20,7 +20,7 @@ export ORDERER_ADDR="orderer.example.com:7050"
 starttime=$(date +%s) # timer
 versionNumber=$RANDOM # random versioning
 rootDir=$(dirname $(dirname "$PWD")) # Get root dir of project
-basicNetworkDir="$rootDir/basic-network" # dir of basic network
+basicNetworkDir="../../../basic-network" # dir of basic network
 
 
 # See if basic network is present
@@ -29,7 +29,7 @@ if [ -d "$basicNetworkDir" ]; then
   cd $basicNetworkDir
   ./start.sh
 else
-  printf "%40s\n" "$(tput setaf 1)Basic network was not found.$(tput sgr0)"
+  printf "%40s\n" "$(tput setaf 1)Basic network was not found. ($(dirname $(dirname "basename")))$(tput sgr0)"
   exit 0
 fi
 
@@ -44,8 +44,8 @@ arg1="CORE_PEER_LOCALMSPID=Org1MSP"
 arg2="CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp"
 
 
-# Installing the chaincode --> ../../../wse-odb absolute path doesn't work
-docker exec -e $arg1 -e $arg2 cli peer chaincode install -l node -n $CHAINCODE_NAME -v $versionNumber -p '../../../wse-odb'
+# Installing the chaincode --> ../../../nodejs absolute path doesn't work
+docker exec -e $arg1 -e $arg2 cli peer chaincode install -l node -n $CHAINCODE_NAME -v $versionNumber -p $CHAINCODE_PATH
 
 
 # Instantiate the chaincode (Calling the Init function)
