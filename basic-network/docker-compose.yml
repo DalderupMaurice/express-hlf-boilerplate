@@ -48,7 +48,7 @@ services:
 
   peer0.org1.example.com:
     container_name: peer0.org1.example.com
-    image: hyperledger/fabric-peer:latest@sha256:b1d49f180410136f25b3e9283c242cf319f4c8cb27f0ef1d9de532a4dd131afe
+    image: hyperledger/fabric-peer:latest@sha256:16f7cdb0f825f0cee17cf7ca3c0d75e55eecdcff5c38e1be8ccd8105a139776f
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_PEER_ID=peer0.org1.example.com
