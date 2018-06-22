@@ -87,7 +87,7 @@ services:
 
   couchdb:
     container_name: couchdb
-    image: hyperledger/fabric-couchdb:latest@sha256:0054fb5cab2465a7d1ffcf30d6ad990a7f0b31c76aa5e4333229378dc41a897b
+    image: hyperledger/fabric-couchdb:latest@sha256:ab31c1099dd41824e7c8e3e840095ebfda8cc8a045c0c8f230a3a9d7db699bf8
     # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
     # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
     environment:
