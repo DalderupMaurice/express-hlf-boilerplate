@@ -10,7 +10,7 @@ networks:
 
 services:
   ca.example.com:
-    image: hyperledger/fabric-ca:latest@sha256:0a81cbc3e8accd8ea6d0b377b3766efbf585c21ef7fe147e2e0f3aa629472e03
+    image: hyperledger/fabric-ca:latest@sha256:f77aa0ff885c572b090d1ff7564780daafd50d9e839b6241c2ab12c37f47b94a
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.example.com
