@@ -27,7 +27,7 @@ services:
 
   orderer.example.com:
     container_name: orderer.example.com
-    image: hyperledger/fabric-orderer:latest@sha256:c84baafbe8eb29dd8f50e53a4dd87aa2636f5829827f0e48169857eee2209359
+    image: hyperledger/fabric-orderer:latest@sha256:94f978840f0911e9f26b48de2a5572b4b962339a7e67836c7f4f1a658614c1f4
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
