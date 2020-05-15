@@ -100,7 +100,7 @@ services:
 
   cli:
     container_name: cli
-    image: hyperledger/fabric-tools:latest@sha256:69496639705e9e021ce446c1aacf329d9609d179607c6f590eae830181b48cb1
+    image: hyperledger/fabric-tools:latest@sha256:7a778695cb29146017fbfa37c304e1b49ba57d86864fbbe8e809f8f43f23f131
     tty: true
     environment:
       - GOPATH=/opt/gopath
