@@ -58,7 +58,7 @@
     "morgan": "1.9.1",
     "superagent": "3.8.2",
     "uuid": "3.2.1",
-    "winston": "2.4.1"
+    "winston": "2.4.7"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
