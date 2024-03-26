@@ -40,7 +40,7 @@
     "cors": "2.8.4",
     "debug": "3.1.0",
     "dotenv": "6.0.0",
-    "express": "4.16.3",
+    "express": "4.19.2",
     "express-jwt": "5.3.1",
     "express-queue": "0.0.12",
     "express-validation": "1.0.2",
