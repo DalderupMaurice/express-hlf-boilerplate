@@ -70,7 +70,7 @@
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",
     "babel-register": "6.26.0",
-    "chai": "4.1.2",
+    "chai": "4.5.0",
     "coveralls": "3.0.3",
     "cross-env": "5.1.6",
     "del": "3.0.0",
