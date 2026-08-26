@@ -57,7 +57,7 @@
     "mongoose": "5.7.5",
     "morgan": "1.9.1",
     "superagent": "3.8.2",
-    "uuid": "3.2.1",
+    "uuid": "11.1.1",
     "winston": "2.4.1"
   },
   "devDependencies": {
