@@ -12,6 +12,6 @@
   "license": "MIT",
   "dependencies": {
     "fabric-shim": "1.1.2",
-    "moment": "2.22.2"
+    "moment": "2.29.4"
   }
 }
